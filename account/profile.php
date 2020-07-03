@@ -7,7 +7,7 @@ if(isset($_SESSION["logged"])){
   $viewComments="";             // this variable will be used to stock dynamic html content that has comments of users.
   
   $deleteComment="";          //this will include the DELETE COMMENT button if the user wishes to delete his own comment(s)
-  $additionalMenu="";                   // if the user is a professor, a new item on the panel will appear
+  $additionalMenu="";                   // test / if the user is a professor, a new item on the panel will appear 
   if ($_SESSION["role"]=="p"){
     $additionalMenu="
     <li class=\"nav-item\">
@@ -39,9 +39,7 @@ function getName($n) {                  // generating random input names  FOR UN
   return $randomString; 
 
 }   
-
-  
-                                
+                          
   $mysqli= new mysqli('127.0.0.1','root','','pfe');       // it will stock a big amount of posts
   $mail=$_SESSION["mail"];
   $req_membre="SELECT ID_MEMBRE from MEMBRE where email='$mail'";
@@ -52,43 +50,48 @@ function getName($n) {                  // generating random input names  FOR UN
     }
   $req_profile="SELECT * FROM MEMBRE WHERE EMAIL='$mail'";
   $req_filiere="SELECT FILIERE FROM ETUDIANT WHERE ID_MEMBRE ='$id_membre'";
-  $req_classe = "SELECT ID_CLASSE FROM faire_partie_de WHERE ID_MEMBRE ='$id_membre'";
+  $req_classe = "SELECT ID_CLASSE FROM ETUDIANT WHERE ID_MEMBRE ='$id_membre'";
 
   $res_profile=$mysqli->query($req_profile);
   $res_filiere=$mysqli->query($req_filiere);
+  $res_classe=$mysqli->query($req_classe);
 
   while ($profile=$res_profile->fetch_assoc()){
-      $photo="images/faces/".$profile['photo'];
-      $fullname = ucwords($profile['PRENOM'])." ".strtoupper($profile['NOM']);   
+      $pdp="images/faces/".$profile['photo'];
+      $full_name = ucwords($profile['PRENOM'])." ".strtoupper($profile['NOM']);   
     }
     
   while ($f=$res_filiere->fetch_assoc()){                     
-      $filiere = $f['FILIERE'];                                               //extraire nom de filiere a partir de la table ETUDIANT
+      $filiere = $f['FILIERE'];                                       //extraire nom de filiere a partir de la table ETUDIANT (ma m7tajinhach had sa3a)
     }
-    $req_idfiliere="SELECT ID_FILIERE FROM FILIERE WHERE nom='$filiere'";     //recuperer id a partir de la requete precedente 
+   /*  $req_idfiliere="SELECT ID_FILIERE FROM FILIERE WHERE nom='$filiere'";     //recuperer id a partir de la requete precedente 
     $res_idfiliere=$mysqli->query($req_idfiliere);
     while ($idf=$res_idfiliere->fetch_assoc()){
       $id_filiere=$idf['ID_FILIERE'];
-    
     }
-  
-                                          
-  if (isset($_POST["publier"])){                                              //ADDING A POST
+ while ($cl = $res_classe->fetch_assoc()){
+    $classe=$cl['ID_CLASSE'];
+  }*/
+
+                                                          //ADDING A POST    
+  if (isset($_POST["publier"])){                          
         $contenu=$_POST["contenu"];
         $visibilite=$_POST["visibilite"];
         $titre=$_POST["titre"];
         $now = DateTime::createFromFormat('U.u', microtime(true));
         $current= $now->format("Y-m-d H:i:s");
 
-        $req_pub = "INSERT INTO publication VALUES (NULL, '$contenu', '$titre','$current', '$id_membre','$visibilite')";
+        $req_pub = "INSERT INTO publication VALUES (NULL, '$contenu', '$titre','$current', '$id_membre','$visibilite')";            //test 
         $res_pub = $mysqli->query($req_pub);
-        $req_idpub = "SELECT ID_PUB FROM publication where id_membre='$id_membre' order by DATE_PUB desc LIMIT 1";    //recuperer une seule et derniere pub
+
+        $req_idpub = "SELECT ID_PUB FROM publication where ID_MEMBRE='$id_membre' order by DATE_PUB desc LIMIT 1";    //recuperer une seule et derniere pub
         $res_idpub=$mysqli->query($req_idpub);
         while ($pb=$res_idpub->fetch_assoc())
         {
            $id_publication=$pb['ID_PUB'];
         }
-        $req_pubView="INSERT INTO pubview VALUES(NULL, '$id_publication', '$id_membre', '$classe', '$id_filiere')";
+          // pubview ma khdamach
+        $req_pubView="INSERT INTO pubview VALUES(NULL, '$id_publication', '$id_membre', NULL, NULL)";
         $res_pubView=$mysqli->query($req_pubView);
 
     }
@@ -106,11 +109,12 @@ function getName($n) {                  // generating random input names  FOR UN
      
       
     }
-                //DELETING COMMENTS (not working)
-              if (isset($_GET["deletecomment"]))
+              //deleting comments (100% working)
+              if (isset($_GET["action"])) 
               
                 {
-              echo "<SCRIPT>alert('hhhhhhhh');</SCRIPT>"; 
+                  
+             // echo "<SCRIPT>alert('hhhhhhhh');</SCRIPT>"; 
               $commentToDelete= $_GET["id"];
               $verifyMember="SELECT ID_MEMBRE FROM commentaire where ID_COMM='$commentToDelete' ";
                $res_verifyMember=$mysqli->query($verifyMember);
@@ -120,7 +124,7 @@ function getName($n) {                  // generating random input names  FOR UN
                }
                    
                if ($THEmember==$id_membre){
-                   $req_deleteComment = "DELETE FROM commentaire WHERE ID_COMMENT='$commentToDelete' ";
+                   $req_deleteComment = "DELETE FROM commentaire WHERE ID_COMM='$commentToDelete' ";
          
                    $res_deleteComment=$mysqli->query($req_deleteComment);
                    if($res_deleteComment){
@@ -135,24 +139,24 @@ function getName($n) {                  // generating random input names  FOR UN
    
     //                                              DISPLAYING POSTS IN FEED 
     
-    $displaypub= "SELECT * FROM pubview, publication WHERE publication.ID_PUB=pubview.ID_PUB ";// 11 (classe) , 12 (Filiere)
+    $displaypub= "SELECT * FROM publication WHERE visibilite='all'; ";//test
     $res_displaypub=$mysqli->query($displaypub);
               
     while ($displaypubID=$res_displaypub->fetch_assoc())
         { 
           $idpb=$displaypubID['ID_PUB'];
           $idm=$displaypubID['ID_MEMBRE'];
-          $idf=$displaypubID['ID_FILIERE'];
 
           $req_pubs="SELECT * from publication where ID_PUB='$idpb' ";
           $res_pubs=$mysqli->query($req_pubs);
          
          
-          //                                             DISPLAYING COMMENTS FOR POSTS
+                          //                                      DISPLAYING COMMENTS FOR POSTS
           $getComments="SELECT * from commentaire WHERE ID_PUB='$idpb'";
           $res_getComments=$mysqli->query($getComments);
 
-          while ($tempCom=$res_getComments->fetch_assoc()){
+          while ($tempCom=$res_getComments->fetch_assoc())        //comments code scope
+          {
             $commentID=$tempCom['ID_COMM'];
             if ($id_membre==$tempCom['ID_MEMBRE']){                       //for a user to delete his own comments
               $deleteComment="<a href=\"profile.php?id=$commentID&action=deletecomment\" style=\"text-decoration:none; font-family:inherit; padding-top: 20px ;font-weight: inherit\">Delete comment</a>";
@@ -166,8 +170,6 @@ function getName($n) {                  // generating random input names  FOR UN
               $commentatorPDP=$temp['photo'];
               
             }
-            
-            
             $viewComments.="
             <li>
             <img class=\"img-sm rounded-circle image-layer-item\" src=\"images/faces/$commentatorPDP\" alt=\"profile\">
@@ -181,12 +183,9 @@ function getName($n) {                  // generating random input names  FOR UN
             </h5>
             <p class=\"text-muted\">$commentContent</p>
             
-        </li>";
-
+            </li>";
             $deleteComment="";
-            
           }
-
           while ($pubs=$res_pubs->fetch_assoc())
             {
               $content=$pubs['CONTENU_PUB'];
@@ -194,27 +193,22 @@ function getName($n) {                  // generating random input names  FOR UN
               $date=$pubs['DATE_PUB'];
               $visib=$pubs['visibilite'];
 
-              $req_getfullname="SELECT NOM, PRENOM, photo, FILIERE from MEMBRE, ETUDIANT WHERE MEMBRE.ID_MEMBRE=ETUDIANT.ID_MEMBRE AND MEMBRE.ID_MEMBRE='$idm'";
+              $req_getfullname="SELECT NOM, PRENOM, photo from MEMBRE, ETUDIANT WHERE MEMBRE.ID_MEMBRE=ETUDIANT.ID_MEMBRE AND MEMBRE.ID_MEMBRE='$idm'";
 
               $res_getfullname=$mysqli->query($req_getfullname);
               while ($info_membre=$res_getfullname->fetch_assoc())
               {
                 $full_name=ucwords($info_membre['PRENOM'])." ".strtoupper($info_membre['NOM']);
-                $pdp=$info_membre['photo'];
-                $filiere_membre=$info_membre['FILIERE'];
-                      
+                $pdp=$info_membre['photo'];       
               }
-
                 
             }
 
-              
-              $token=getName(5);                   //for unique comment id's, this function generates a random string that will act as th name
-                                                   //of a hidden input and the button to get the comment
+              $token=getName(5);  //for unique comment id's, this function generates a random string that will act as th name of a hidden input and the button to get the comment
               $viewPublication.="
                             <!-- i3ada -->
-                            <div class=\"profile-feed\" style=\"width:100%\">
-                                <div class=\"col-12 grid-margin\">
+                            
+                                <div class=\"col-8 grid-margin stretch-card\">
                                   <div class=\"card\">
                                     <div class=\"card-body\">
                                       <div class=\"d-flex align-items-start profile-feed-item\" style=\"border:0px\">
@@ -226,9 +220,7 @@ function getName($n) {                  // generating random input names  FOR UN
                                             <small class=\"ml-4 text-muted\"><i class=\"far fa-plus mr-1\"></i>$visib</small>
 
                                           </h6>
-                                          <p style=\"margin-bottom: 5px\">
-                                           $filiere_membre . 
-                                          </p>
+                                          <br>
                                           <h5 style=\"font-size: 0.95rem\">$title</h5>
                                           <p style=\"padding-top: 7px; font-size: 1.2rem\">$content</p>
                             
@@ -237,10 +229,13 @@ function getName($n) {                  // generating random input names  FOR UN
                                       
                                       <form method=\"POST\" style = \"margin-left: 7%\" action=\"#\">
                                         <input type=\"hidden\" name=\"t$token\" value=\"$idpb\">
-                                        <input type=\"text\" required name=\"$token\" placeholder=\"Commenter\" style=\"height:50px;width:450px;word-break:break-word; overflow: auto; border: 0; padding-bottom: 5px\">
-                                        <button class=\"btn btn-primary mr-2\" type=\"submit\" value=\"$token\" name=\"commenter\">Commenter</button>
+                                        <div class=\"add-items d-flex\">
+                                          <input type=\"text\" required name=\"$token\" placeholder=\"Commenter\"class=\"form-control todo-list-input\" style=\"height:50px;width:450px;word-break:break-word; overflow: auto; border: 0; padding-bottom: 5px\">
+                                          <button class=\"btn btn-primary mr-2\" type=\"submit\" value=\"$token\" name=\"commenter\"><i class=\"fa fa-paper-plane \" ></i></button>
+                                        </div>
+                                        
                                       </form>
-                                      <button onclick=\"togglecomments('$token', 'b$token')\" id=\"$token\" class=\"btn btn-link btn-rounded btn-fw\">Commentaires</button>
+                                      <button onclick=\"togglecomments('$token', 'b$token')\" id=\"$token\" class=\"btn btn-link btn-rounded btn-fw\">Commentaires<i class=\"fa fa-comment\"></i></button>
                                       <div id=\"b$token\" style=\"padding-top: 20px \">
                                         <ul class=\"solid-bullet-list\">
 
@@ -251,15 +246,15 @@ function getName($n) {                  // generating random input names  FOR UN
                                     </div>
                                   </div>
                                 </div>
-                              </div>
-                            </div> ";
+                              
+                             ";
 
-                $viewComments="";                                     //resetting comments 
+                $viewComments="";                                     //resetting viewComments SO AS NOT TO OVERWRITE COMMENTS
 
         }
               
 
-                          //choice is from side panel
+                          //choice is from side panel     
     if(isset($_GET["classe"]))
     {
       $viewPublication="";
@@ -271,7 +266,7 @@ function getName($n) {                  // generating random input names  FOR UN
               
             while ($displaypubID=$res_displaypub->fetch_assoc()){ // 2 fois
 
-              $idpb=$displaypubID['ID_PUB']; //=11
+              $idpb=$displaypubID['ID_PUB']; 
               $idm=$displaypubID['ID_MEMBRE'];
               $idf=$displaypubID['ID_FILIERE'];
 
@@ -334,7 +329,7 @@ function getName($n) {                  // generating random input names  FOR UN
 
     }
    
-    if(isset($_GET["filiere"]))
+    if(isset($_GET["filiere"]))                 //rim
     {   
       $viewPublication="";
         $getfiliere=$_GET["filiere"];
@@ -364,13 +359,14 @@ function getName($n) {                  // generating random input names  FOR UN
               while ($info_membre=$res_getfullname->fetch_assoc()){
                 $full_name=ucwords($info_membre['PRENOM'])." ".strtoupper($info_membre['NOM']);
                 $pdp=$info_membre['photo'];
-                $filiere_membre=$info_membre['FILIERE'];
+                //$filiere_membre=$info_membre['FILIERE'];
                       
                 }
               }
                           $viewPublication.="
                             <!-- i3ada -->
-                            <div class=\"profile-feed\" style=\"width:100%\">
+                            <div class=\"row\">
+                            <div class=\"profile-feed\" >
                                 <div class=\"col-12 grid-margin\">
                                   <div class=\"card\">
                                     <div class=\"card-body\">
@@ -393,7 +389,7 @@ function getName($n) {                  // generating random input names  FOR UN
                                       </div>
                                     </div>
                                   </div>
-                                </div>
+                                </div></div>
                               </div> ";
                               
 
@@ -430,12 +426,13 @@ else {
   <link rel="stylesheet" href="../assets/vendors/css/vendor.bundle.addons.css">
   <!-- endinject -->
   <!-- plugin css for this page -->
+  <link rel="icon" type="image/png" href="../assets/images/V.png">
 
   <!-- End plugin css for this page -->
   <!-- inject:css -->
   <link rel="stylesheet" href="../assets/css/style.css">
   <!-- endinject -->
-  <link rel="shortcut icon" href="../assets/images/V-logo-mini.svg" />
+  <link rel="shortcut icon" href="../assets/images/favicon.png" />
    <!-- plugins:js -->
    <script src="../assets/vendors/js/vendor.bundle.base.js"></script>
   <script src="../assets/vendors/js/vendor.bundle.addons.js"></script>
@@ -450,553 +447,220 @@ else {
   <!-- Custom js for this page-->
   <script src="../assets/js/dragula.js"></script>
   <script src="../assets/js/test2.js"></script>             <!-- show and hide comments -->
+  <!-- endinject -->
+  <!-- Custom js for this page-->
+  <script src="../assets/js/dashboard.js"></script>
+  <!-- End custom js for this page-->
+ 
+  <!-- Custom js for this page-->
+ <script src="../assets/js/formpickers.js"></script>
+ <script src="../assets/js/form-addons.js"></script>
+ <script src="../assets/js/x-editable.js"></script>
+ <script src="../assets/js/dropify.js"></script>
+ <script src="../assets/js/dropzone.js"></script>
+ <script src="../assets/js/jquery-file-upload.js"></script>
+ <script src="../assets/js/formpickers.js"></script>
+ <script src="../assets/js/form-repeater.js"></script>
+ <script src="../assets/js/test.js"></script>
+ <script src="../assets/js/modal-demo.js"></script>
+ <!-- End custom js for this page-->
+
+  <input type="file" multiple="multiple" class="dz-hidden-input" style="visibility: hidden; position: absolute; top: 0px; left: 0px; height: 0px; width: 0px;">
+
+
   <!-- End custom js for this page-->
 </head>
 
 <body class="boxed-layout">
   <div class="container-scroller">
     <!-- partial:partials/_navbar.html -->
-    <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row default-layout-navbar">
-      <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-        <a class="navbar-brand brand-logo" href="profile.php"><img src="../assets/images/V-logo.svg" alt="logo"/></a>
-        <a class="navbar-brand brand-logo-mini" href="profile.php"><img src="../assets/images/V-logo-mini.svg" alt="logo"/></a>
-      </div>
-      <div class="navbar-menu-wrapper d-flex align-items-stretch">
-        <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
-          <span class="fas fa-bars"></span>
-        </button>
-        <ul class="navbar-nav">
-          <li class="nav-item nav-search d-none d-md-flex">
-            <div class="nav-link">
-              <div class="input-group">
-                <div class="input-group-prepend">
-                  <span class="input-group-text">
-                    <i class="fas fa-search"></i>
-                  </span>
-                </div>
-                <input type="text" class="form-control" placeholder="Search" aria-label="Search">
-              </div>
-            </div>
-          </li>
-        </ul>
-        <ul class="navbar-nav navbar-nav-right">
-          
+    <?php include ('nav/nav_account.php') ?>
 
-          <li class="nav-item dropdown d-none d-lg-flex">
-            <div class="nav-link">
-              <span class="dropdown-toggle btn btn-outline-dark" id="languageDropdown" data-toggle="dropdown">Classroom</span>
-              <div class="dropdown-menu navbar-dropdown" aria-labelledby="languageDropdown">
-                <a class="dropdown-item font-weight-medium" href="#" data-toggle="modal" data-target="#exampleModal-2">
-                  Add
-                  
-                </a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item font-weight-medium" href="#">
-                  Join
-                </a>
-                
-              </div>
-              
-
-
-            </div>
-            
-          </li>
-              
-          <li class="nav-item dropdown">
-            <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-toggle="dropdown">
-              <i class="fas fa-bell mx-0"></i>
-              <span class="count">16</span>
-            </a>
-            <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
-              <a class="dropdown-item">
-                <p class="mb-0 font-weight-normal float-left">You have 16 new notifications
-                </p>
-                <span class="badge badge-pill badge-warning float-right">View all</span>
-              </a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item preview-item">
-                <div class="preview-thumbnail">
-                  <div class="preview-icon bg-danger">
-                    <i class="fas fa-exclamation-circle mx-0"></i>
-                  </div>
-                </div>
-                <div class="preview-item-content">
-                  <h6 class="preview-subject font-weight-medium">Application Error</h6>
-                  <p class="font-weight-light small-text">
-                    Just now
-                  </p>
-                </div>
-              </a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item preview-item">
-                <div class="preview-thumbnail">
-                  <div class="preview-icon bg-warning">
-                    <i class="fas fa-wrench mx-0"></i>
-                  </div>
-                </div>
-                <div class="preview-item-content">
-                  <h6 class="preview-subject font-weight-medium">Settings</h6>
-                  <p class="font-weight-light small-text">
-                    Private message
-                  </p>
-                </div>
-              </a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item preview-item">
-                <div class="preview-thumbnail">
-                  <div class="preview-icon bg-info">
-                    <i class="far fa-envelope mx-0"></i>
-                  </div>
-                </div>
-                <div class="preview-item-content">
-                  <h6 class="preview-subject font-weight-medium">New user registration</h6>
-                  <p class="font-weight-light small-text">
-                    2 days ago
-                  </p>
-                </div>
-              </a>
-            </div>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link count-indicator dropdown-toggle" id="messageDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
-              <i class="fas fa-envelope mx-0"></i>
-              <span class="count">25</span>
-            </a>
-            <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="messageDropdown">
-              <div class="dropdown-item">
-                <p class="mb-0 font-weight-normal float-left">You have 7 unread mails
-                </p>
-                <span class="badge badge-info badge-pill float-right">View all</span>
-              </div>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item preview-item">
-                <div class="preview-thumbnail">
-                    <img src="assets/images/faces/face4.jpg" alt="image" class="profile-pic">
-                </div>
-                <div class="preview-item-content flex-grow">
-                  <h6 class="preview-subject ellipsis font-weight-medium">David Grey
-                    <span class="float-right font-weight-light small-text">1 Minutes ago</span>
-                  </h6>
-                  <p class="font-weight-light small-text">
-                    The meeting is cancelled
-                  </p>
-                </div>
-              </a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item preview-item">
-                <div class="preview-thumbnail">
-                    <img src="assets/images/faces/face2.jpg" alt="image" class="profile-pic">
-                </div>
-                <div class="preview-item-content flex-grow">
-                  <h6 class="preview-subject ellipsis font-weight-medium">Tim Cook
-                    <span class="float-right font-weight-light small-text">15 Minutes ago</span>
-                  </h6>
-                  <p class="font-weight-light small-text">
-                    New product launch
-                  </p>
-                </div>
-              </a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item preview-item">
-                <div class="preview-thumbnail">
-                    <img src="assets/images/faces/face3.jpg" alt="image" class="profile-pic">
-                </div>
-                <div class="preview-item-content flex-grow">
-                  <h6 class="preview-subject ellipsis font-weight-medium"> Johnson
-                    <span class="float-right font-weight-light small-text">18 Minutes ago</span>
-                  </h6>
-                  <p class="font-weight-light small-text">
-                    Upcoming board meeting
-                  </p>
-                </div>
-              </a>
-            </div>
-          </li>
-          <li class="nav-item nav-profile dropdown">
-            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-            <img src="<?php echo $photo; ?>" alt="profile"/>            </a>
-            <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
-              <a class="dropdown-item">
-                <i class="fas fa-cog text-primary"></i>
-                Settings
-              </a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item">
-                <i class="fas fa-power-off text-primary"></i>
-                Logout
-              </a>
-            </div>
-          </li>
-          <li class="nav-item nav-settings d-none d-lg-block">
-            <a class="nav-link" href="#">
-              <i class="fas fa-ellipsis-h"></i>
-            </a>
-          </li>
-        </ul>
-        <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
-          <span class="fas fa-bars"></span>
-        </button>
-      </div>
-    </nav>
-
-    <div class="modal fade" id="exampleModal-2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel-2" aria-hidden="true" style="display: none;">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel-2">Add a Class</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">×</span>
-            </button>
-          </div>
-            
-
-            <form class="forms-sample" action="form.php"  method="POST" id="editForm" role="form">
-             <div class="modal-body">
-              <div class="form-group">
-                <label class="nameInput">Class Name *</label>
-                
-                  <div class="input-group">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text">@</span>
-                    </div>
-                    <input name="cname" type="text" class="form-control" id="nameInput" placeholder="Classname" aria-label="Classname" required>
-                  </div>
-              </div>
-              
-              <div class="form-group">
-                <label for="descInput">Description</label>
-                <input name="description" type="text" class="form-control" id="descInput" placeholder="Descriptio" >
-              </div>
-              
-              <div class="form-group">
-                <label for="semInput">Semestre</label>
-                <select  name="csem" class="form-control form-control-lg" id="semInput">
-                  <option value="">Quelle semestre..?</option>
-                  <option value="S1 - S2">S1 - S2</option>
-                  <option value="S3 - S4">S3 - S4</option>
-                  <option value="S5 - S6">S5 - S6</option>
-
-                </select>
-              </div>
-             
-              <div class="form-group">
-                <label for="exampleInputConfirmPassword1">Password *</label>
-                <input name="cpw" type="password" class="form-control" id="exampleInputConfirmPassword1" placeholder="Password" required>
-              </div>
-
-              <div class="form-group">
-                <div class="form-check form-check-flat form-check-primary">
-                  <label class="form-check-label">
-                    <input type="checkbox" class="form-check-input">
-                    Agree to terms and conditions
-                  <i class="input-helper"></i><i class="input-helper"></i></label>
-                </div>
-              </div>
-            
-              </div>
-              <div class="modal-footer">
-                <button type="submit" name="insertdata" class="btn btn-primary mr-2">submit</button>
-                <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
-              </div>
-            </form>
-       
-       
-        </div>
-      </div>
-    </div>
-
-    <!-- partial -->
-    <div class="container-fluid page-body-wrapper">
-      <!-- partial:partials/_settings-panel.html -->
-      <div class="theme-setting-wrapper">
-        <div id="settings-trigger"><i class="fas fa-fill-drip"></i></div>
-        <div id="theme-settings" class="settings-panel">
-          <i class="settings-close fa fa-times"></i>
-          <p class="settings-heading">SIDEBAR SKINS</p>
-          <div class="sidebar-bg-options selected" id="sidebar-light-theme"><div class="img-ss rounded-circle bg-light border mr-3"></div>Light</div>
-          <div class="sidebar-bg-options" id="sidebar-dark-theme"><div class="img-ss rounded-circle bg-dark border mr-3"></div>Dark</div>
-          <p class="settings-heading mt-2">HEADER SKINS</p>
-          <div class="color-tiles mx-0 px-4">
-            <div class="tiles primary"></div>
-            <div class="tiles success"></div>
-            <div class="tiles warning"></div>
-            <div class="tiles danger"></div>
-            <div class="tiles info"></div>
-            <div class="tiles dark"></div>
-            <div class="tiles default"></div>
-          </div>
-        </div>
-      </div>
-      <div id="right-sidebar" class="settings-panel">
-        <i class="settings-close fa fa-times"></i>
-        <ul class="nav nav-tabs" id="setting-panel" role="tablist">
-          <li class="nav-item">
-            <a class="nav-link active" id="todo-tab" data-toggle="tab" href="#todo-section" role="tab" aria-controls="todo-section" aria-expanded="true">TO DO LIST</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" id="chats-tab" data-toggle="tab" href="#chats-section" role="tab" aria-controls="chats-section">CHATS</a>
-          </li>
-        </ul>
-        <div class="tab-content" id="setting-content">
-          <div class="tab-pane fade show active scroll-wrapper" id="todo-section" role="tabpanel" aria-labelledby="todo-section">
-            <div class="add-items d-flex px-3 mb-0">
-              <form class="form w-100">
-                <div class="form-group d-flex">
-                  <input type="text" class="form-control todo-list-input" placeholder="Add To-do">
-                  <button type="submit" class="add btn btn-primary todo-list-add-btn" id="add-task-todo">Add</button>
-                </div>
-              </form>
-            </div>
-            <div class="list-wrapper px-3">
-              <ul class="d-flex flex-column-reverse todo-list">
-                <li>
-                  <div class="form-check">
-                    <label class="form-check-label">
-                      <input class="checkbox" type="checkbox">
-                      Team review meeting at 3.00 PM
-                    </label>
-                  </div>
-                  <i class="remove fa fa-times-circle"></i>
-                </li>
-                <li>
-                  <div class="form-check">
-                    <label class="form-check-label">
-                      <input class="checkbox" type="checkbox">
-                      Prepare for presentation
-                    </label>
-                  </div>
-                  <i class="remove fa fa-times-circle"></i>
-                </li>
-                <li>
-                  <div class="form-check">
-                    <label class="form-check-label">
-                      <input class="checkbox" type="checkbox">
-                      Resolve all the low priority tickets due today
-                    </label>
-                  </div>
-                  <i class="remove fa fa-times-circle"></i>
-                </li>
-                <li class="completed">
-                  <div class="form-check">
-                    <label class="form-check-label">
-                      <input class="checkbox" type="checkbox" checked>
-                      Schedule meeting for next week
-                    </label>
-                  </div>
-                  <i class="remove fa fa-times-circle"></i>
-                </li>
-                <li class="completed">
-                  <div class="form-check">
-                    <label class="form-check-label">
-                      <input class="checkbox" type="checkbox" checked>
-                      Project review
-                    </label>
-                  </div>
-                  <i class="remove fa fa-times-circle"></i>
-                </li>
-              </ul>
-            </div>
-            <div class="events py-4 border-bottom px-3">
-              <div class="wrapper d-flex mb-2">
-                <i class="fa fa-times-circle text-primary mr-2"></i>
-                <span>Feb 11 2018</span>
-              </div>
-              <p class="mb-0 font-weight-thin text-gray">Creating component page</p>
-              <p class="text-gray mb-0">build a js based app</p>
-            </div>
-            <div class="events pt-4 px-3">
-              <div class="wrapper d-flex mb-2">
-                <i class="fa fa-times-circle text-primary mr-2"></i>
-                <span>Feb 7 2018</span>
-              </div>
-              <p class="mb-0 font-weight-thin text-gray">Meeting with Alisa</p>
-              <p class="text-gray mb-0 ">Call Sarah Graves</p>
-            </div>
-          </div>
-          <!-- To do section tab ends -->
-          <div class="tab-pane fade" id="chats-section" role="tabpanel" aria-labelledby="chats-section">
-            <div class="d-flex align-items-center justify-content-between border-bottom">
-              <p class="settings-heading border-top-0 mb-3 pl-3 pt-0 border-bottom-0 pb-0">Friends</p>
-              <small class="settings-heading border-top-0 mb-3 pt-0 border-bottom-0 pb-0 pr-3 font-weight-normal">See All</small>
-            </div>
-            <ul class="chat-list">
-              <li class="list active">
-                <div class="profile"><img src="images/faces/face1.jpg" alt="image"><span class="online"></span></div>
-                <div class="info">
-                  <p>Thomas Douglas</p>
-                  <p>Available</p>
-                </div>
-                <small class="text-muted my-auto">19 min</small>
-              </li>
-              <li class="list">
-                <div class="profile"><img src="images/faces/face2.jpg" alt="image"><span class="offline"></span></div>
-                <div class="info">
-                  <div class="wrapper d-flex">
-                    <p>Catherine</p>
-                  </div>
-                  <p>Away</p>
-                </div>
-                <div class="badge badge-success badge-pill my-auto mx-2">4</div>
-                <small class="text-muted my-auto">23 min</small>
-              </li>
-              <li class="list">
-                <div class="profile"><img src="images/faces/face3.jpg" alt="image"><span class="online"></span></div>
-                <div class="info">
-                  <p>Daniel Russell</p>
-                  <p>Available</p>
-                </div>
-                <small class="text-muted my-auto">14 min</small>
-              </li>
-              <li class="list">
-                <div class="profile"><img src="images/faces/face4.jpg" alt="image"><span class="offline"></span></div>
-                <div class="info">
-                  <p>James Richardson</p>
-                  <p>Away</p>
-                </div>
-                <small class="text-muted my-auto">2 min</small>
-              </li>
-              <li class="list">
-                <div class="profile"><img src="images/faces/face5.jpg" alt="image"><span class="online"></span></div>
-                <div class="info">
-                  <p>Madeline Kennedy</p>
-                  <p>Available</p>
-                </div>
-                <small class="text-muted my-auto">5 min</small>
-              </li>
-              <li class="list">
-                <div class="profile"><img src="images/faces/face6.jpg" alt="image"><span class="online"></span></div>
-                <div class="info">
-                  <p>Sarah Graves</p>
-                  <p>Available</p>
-                </div>
-                <small class="text-muted my-auto">47 min</small>
-              </li>
-            </ul>
-          </div>
-          <!-- chat tab ends -->
-        </div>
-      </div>
-      <!-- partial -->
-      <!-- partial:partials/_sidebar.html -->
-      <nav class="sidebar sidebar-offcanvas" id="sidebar">
-        <ul class="nav">
-          <li class="nav-item nav-profile">
-            <div class="nav-link">
-              <div class="profile-image">
-                <img src="<?php echo $photo; ?>" alt="image"/>
-              </div>
-              <div class="profile-name">
-                <p class="name">
-                  <?php echo $fullname; ?>
-                </p>
-                <p class="designation">                                               <!--  this is the role of the user: student, professor or administrator        -->
-                  Super Admin                                                         <!--  change it to $something        -->
-                </p>
-              </div>
-            </div>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="index-2.html">
-              <i class="fa fa-home menu-icon"></i>
-              <span class="menu-title">Dashboard</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="publications.php">
-              <i class="fa fa-puzzle-piece menu-icon"></i>
-              <span class="menu-title">Gestion des publications</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#page-layouts" aria-expanded="false" aria-controls="page-layouts">
-              <i class="fab fa-trello menu-icon"></i>
-              <span class="menu-title">Publications</span>
-              <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="page-layouts">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item d-none d-lg-block"> <a class="nav-link" href="profile.php?classe=<?php echo $classe; ?>">Classes</a></li>
-                <!--make a menu of classes (a student can be in more than one class) -->
-                <li class="nav-item"> <a class="nav-link" href="profile.php?filiere=<?php echo $id_filiere; ?>">Filière</a></li>
-                <li class="nav-item d-none d-lg-block"> <a class="nav-link" href="profile.php">Toutes les publications</a></li>
-              </ul>
-            </div>
-          </li>
-          <?php
-          echo $additionalMenu;
-          ?>
-        </ul>
-      </nav>
       <!-- partial -->
       <div class="main-panel">          
         <div class="content-wrapper">
           <div class="page-header">
-            
+            <h3 class="page-title">
+              <!-- filiere dial l user  -->
+              Filieres
+            </h3>
             <nav aria-label="breadcrumb">
               <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#">UI Elements</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Dragula</li>
+                <li class="breadcrumb-item"><a href="filieres.php">Filiere</a></li>
+                <li class="breadcrumb-item active" aria-current="page">SMI</li>
               </ol>
             </nav>
           </div>
-          <div class="row">
-            
-            <div class="col-12 grid-margin">
-              <div class="card">
-                <div class="card-body">
-                  <div class="card rounded mb-2" style="border:0px">
-                            <div class="card-body p-3">
+
+          <div class="col-md-4 grid-margin stretch-card" style="float: right;  ">
+           
+            <div class="card">
+              <div class="card-body">
+                <!-- Dummy Modal Starts -->
+                <!-- Dummy Modal Ends -->
+                <!-- Add Post -->
+                <div class="text-center">
+                  <button type="button" class="btn btn-secondary btn-lg btn-block"data-toggle="modal" data-target="#exampleModal-bla">
+                    Add new post...
+                    <i class="btn-icon-append fas fa-plus"></i>
+                  </button>
+                </div>
+                <div class="modal fade" id="exampleModal-bla" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel-bla" aria-hidden="true" style="display: none;">
+                  <div class="modal-dialog" role="document">
+                  
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel-bla">ADD TEXT A?D FILES </h5>
+                        
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">×</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <DIV class="card">
+                          <div class="card-body">
+                          <h4 class="card-title">Basic Tab</h4>
+                          <p class="card-description">Horizontal bootstrap tab</p>
+                          <ul class="nav nav-tabs" role="tablist">
+                            <li class="nav-item">
+                              <a class="nav-link active show" id="home-tab" data-toggle="tab" href="#text-1" role="tab" aria-controls="home-1" aria-selected="true">text</a>
+                            </li>
+                            <li class="nav-item">
+                              <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile-1" role="tab" aria-controls="profile-1" aria-selected="false">Add file</a>
+                            </li>
+                            <li class="nav-item">
+                              <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact-1" role="tab" aria-controls="contact-1" aria-selected="false">le3ba 5ra</a>
+                            </li>
+                          </ul>
+
+                          <div class="tab-content">
+                            <div class="tab-pane fade active show" id="text-1" role="tabpanel" aria-labelledby="home-tab">
                               <div class="media">
-                                <img src="<?php echo $photo; ?>" alt="image" class="img-sm mr-3 rounded-circle">
-                                <div class="media-body">
-                                  <h6 class="mb-1"><?php  echo $fullname; ?></h6>
-                                  <p class="mb-0 text-muted" style = "padding-bottom: 5px">
-                                    <?php echo strtoupper($filiere);     ?>                           
-                                  </p>
-                                  
-                                  <div class="form-group">
-                                    <form method="POST" action="#">
-                                  <select name="visibilite" class="btn btn-sm btn-outline-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >Publier pour:
-                                  <div class="dropdown-menu" x-placement="top-start" style="position: absolute; transform: translate3d(0px, -2px, 0px); top: 0px; left: 0px; will-change: transform;">
-                                      <option value="all" class="dropdown-item">Tout le monde</option>
-                                      <option value="classe" class="dropdown-item">Classe</option>
-                                      <option value="fil" class="dropdown-item">Filière</option>
-                                  </select>
-                                  
-                                </div>
-                                    <br>
                                 
-                                  <div class="form-group">
-                                  <label for="exampleInputCity1" style="margin-top: -10px">Titre</label>
-                                  <input type="text" required name="titre" class="form-control" id="exampleInputCity1">
-                                  <label for="exampleTextarea1" style="padding-top: 8px">Publication</label>
-                                    <textarea name="contenu" required class="form-control" id="exampleTextarea1" rows="4"></textarea>
-
-                                  </div>
-
-                                  <div class="form-group">
-                                  <button type="submit" name="publier" class="btn btn-primary mr-2">Publier</button>
-                                                       
-                                    <input type="file" name="img[]" class="file-upload-default">                                      
-                                        <button class="file-upload-browse btn btn-primary" type="button">Upload</button> 
-                                        
-                                        
-                                  </div>
-                                  </form>
-                                </div>                              
+                                <div class="media-body">
+                                  <textarea id="maxlength-textarea" class="form-control" maxlength="200" rows="7" placeholder="Type something..."></textarea>
+                                </div>
                               </div>
                             </div>
+                            <div class="tab-pane fade" id="profile-1" role="tabpanel" aria-labelledby="profile-tab">
+                              <div class="media">
+                                <div class="media-body">
+                                  <div class="form-group">
+                              
+                                    <!-- Upload image -->
+                                    
+                                    <div id="fileuploader">
+                                    <div class="ajax-upload-dragdrop" style="vertical-align: top; width: 400px;">
+                                    <div class="ajax-file-upload" style="position: relative; overflow: hidden; cursor: default;">
+                                      Upload
+                                      <form method="POST" action="YOUR_FILE_UPLOAD_URL" enctype="multipart/form-data" style="margin: 0px; padding: 0px;">
+                                        <input type="file" id="ajax-upload-id-1590863929165" name="myfile[]" accept="*" multiple="" style="position: absolute; cursor: pointer; top: 0px; width: 100%; height: 100%; left: 0px; z-index: 100; opacity: 0;">
+                                      </form>
+                                    </div>
+                                    <span><b>Drag &amp; Drop Files</b></span>
+                                    </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="tab-pane fade" id="contact-1" role="tabpanel" aria-labelledby="contact-tab">
+                              <h4>Contact us </h4>
+                              <p>
+                                Feel free to contact us if you have any questions!
+                              </p>
+                              <p>
+                                <i class="fa fa-phone text-info"></i>
+                                +123456789
+                              </p>
+                              <p>
+                                <i class="far fa-envelope-open text-success"></i>
+                                contactus@example.com
+                              </p>
+                            </div>
                           </div>
-                  
+                        </div>
+                        </DIV>
+                        
+                      </div>
+                      
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-success">Submit</button>
+                        <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Modal Ends -->
+              </div>
+                
+              <div class="border-bottom pt-2">
+                <!-- seperation line -->
+              </div> 
+              <br>
+
+              <!--  Calendar  -->
+
+              <div class="card-body">
+                <h4 class="card-title">
+                  <i class="fas fa-calendar-alt"></i>
+                  Calendar
+                </h4>
+                <div id="inline-datepicker-example" class="datepicker"></div>
+              </div>
+                
+              
+            </div>
+          </div>
+
+        
+          
+          <div class="col-8 grid-margin stretch-card">
+            <div class="card">
+              <div class="card-body">
+                <div class="media">
+                  <img src="<?php echo $pdp; ?>" alt="image" class="img-sm mr-3 rounded-circle">
+                  <div class="media-body">
+                    <h6 class="mb-1"><?php  echo $full_name; ?></h6>
+                    <div class="form-group">
+                      <form method="POST" action="#">
+                        <select name="visibilite" class="btn btn-sm btn-outline-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >Publier pour:
+                          <div class="dropdown-menu" x-placement="top-start" style="position: absolute; transform: translate3d(0px, -2px, 0px); top: 0px; left: 0px; will-change: transform;">
+                            <option value="all" class="dropdown-item">Tout le monde</option>
+                            <option value="classe" class="dropdown-item">Classe</option>
+                            <option value="fil" class="dropdown-item">Filière</option>
+                        </select>
+                        </div>
+                          <br>
+                      
+                        <div class="form-group">
+                          <label for="exampleInputCity1" style="margin-top: -10px">Titre</label>
+                          <input type="text" required name="titre" class="form-control" id="exampleInputCity1">
+                          <input type="hidden"  name="vis" value="filiere">
+
+                          <label for="exampleTextarea1" style="padding-top: 8px">Publication</label>
+                          <textarea name="contenu" required class="form-control" id="exampleTextarea1" rows="4"></textarea>
+
+                        </div>
+
+                        <div class="form-group">
+                          <button type="submit" name="publier" class="btn btn-primary mr-2">Publier</button>         
+                          <input type="file" name="img[]" class="file-upload-default">                                      
+                          <button class="file-upload-browse btn btn-primary" type="button">Upload</button> 
+                        </div>
+                    </form>
+                  </div>                              
                 </div>
               </div>
             </div>
-            <?php
+          </div>
+          
+        
+        
+        <?php
             echo $viewPublication;
             ?>
-        </div>
+        
         <!-- content-wrapper ends -->
         <!-- partial:partials/_footer.html -->
         <footer class="footer">

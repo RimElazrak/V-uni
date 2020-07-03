@@ -29,7 +29,7 @@ $req_update="UPDATE MEMBRE SET DATE_NAISSANCE='$birthdate', TELEPHONE='$tel', CI
 $res_insert=$mysqli->query($req_insert);
 $res_update=$mysqli->query($req_update);
 
-header('Location: account/S-profile.php');
+header('Location: account/profile.php');
 
 }
 }
@@ -50,18 +50,17 @@ else {
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>Melody Admin</title>
   <!-- plugins:css -->
-  <link rel="icon" type="image/png" href="VUNI-logo.png">
-  <link rel="stylesheet" href="assets/vendors/iconfonts/font-awesome/css/all.min.css">
-  <link rel="stylesheet" href="assets/vendors/css/vendor.bundle.base.css">
-  <link rel="stylesheet" href="assets/vendors/css/vendor.bundle.addons.css">
-  <link rel="shortcut icon" href="assets/images/favicon.png" />
+  <link rel="stylesheet" href="../assets/vendors/iconfonts/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="../assets/vendors/css/vendor.bundle.base.css">
+  <link rel="stylesheet" href="../assets/vendors/css/vendor.bundle.addons.css">
+  <link rel="shortcut icon" href="assets/images/V-logo-mini.svg" />
   
   <!--<link rel="stylesheet" href="css/style.css">  
 
 -->
     <style>
         <?php
-         include 'assets/css/style.css'; 
+         include '../assets/css/style.css'; 
      ?>
      
     </style>
@@ -85,8 +84,8 @@ else {
    
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row default-layout-navbar">
       <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-        <a class="navbar-brand brand-logo" href="index-4.html"><img src="assets/images/V-logo.svg" alt="logo"/></a>
-        <a class="navbar-brand brand-logo-mini" href="index-4.html"><img src="assets/images/V-logo-mini.svg" alt="logo"/></a>
+        <a class="navbar-brand brand-logo" href="index-4.html"><img src="../assets/images/V-logo.svg" alt="logo"/></a>
+        <a class="navbar-brand brand-logo-mini" href="index-4.html"><img src="../assets/images/V-logo-mini.svg" alt="logo"/></a>
       </div>
       <div class="navbar-menu-wrapper d-flex align-items-stretch">
         <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
@@ -178,7 +177,7 @@ else {
               <div class="dropdown-divider"></div>
               <a class="dropdown-item preview-item">
                 <div class="preview-thumbnail">
-                    <img src="assets/images/faces/face4.jpg" alt="image" class="profile-pic">
+                    <img src="../assets/images/faces/face4.jpg" alt="image" class="profile-pic">
                 </div>
                 <div class="preview-item-content flex-grow">
                   <h6 class="preview-subject ellipsis font-weight-medium">David Grey
@@ -192,7 +191,7 @@ else {
               <div class="dropdown-divider"></div>
               <a class="dropdown-item preview-item">
                 <div class="preview-thumbnail">
-                    <img src="assets/images/faces/face2.jpg" alt="image" class="profile-pic">
+                    <img src="../assets/images/faces/face2.jpg" alt="image" class="profile-pic">
                 </div>
                 <div class="preview-item-content flex-grow">
                   <h6 class="preview-subject ellipsis font-weight-medium">Tim Cook
@@ -206,7 +205,7 @@ else {
               <div class="dropdown-divider"></div>
               <a class="dropdown-item preview-item">
                 <div class="preview-thumbnail">
-                    <img src="assets/images/faces/face3.jpg" alt="image" class="profile-pic">
+                    <img src="../assets/images/faces/face3.jpg" alt="image" class="profile-pic">
                 </div>
                 <div class="preview-item-content flex-grow">
                   <h6 class="preview-subject ellipsis font-weight-medium"> Johnson
@@ -221,7 +220,7 @@ else {
           </li>
           <li class="nav-item nav-profile dropdown">
             <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-              <img src="assets/images/faces/profile.svg" alt="profile"/>
+              <img src="../assets/images/faces/profile.svg" alt="profile"/>
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
               <a class="dropdown-item">
@@ -229,7 +228,7 @@ else {
                 Settings
               </a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="home.php">
+              <a class="dropdown-item" href="../home.php">
                 <i class="fas fa-power-off text-primary"></i>
                 Logout
               </a>
@@ -472,20 +471,20 @@ else {
   </div>
   <!-- container-scroller -->
   <!-- plugins:js -->
-  <script src="assets/vendors/js/vendor.bundle.base.js"></script>
- <script src="assets/vendors/js/vendor.bundle.addons.js"></script>
+  <script src="../assets/vendors/js/vendor.bundle.base.js"></script>
+ <script src="../assets/vendors/js/vendor.bundle.addons.js"></script>
   <!-- endinject -->
   <!-- inject:js -->
-  <script src="assets/js/off-canvas.js"></script>
-  <script src="assets/js/hoverable-collapse.js"></script>
-  <script src="assets/js/misc.js"></script>
-  <script src="assets/js/settings.js"></script>
-  <script src="assets/js/todolist.js"></script>
+  <script src="../assets/js/off-canvas.js"></script>
+  <script src="../assets/js/hoverable-collapse.js"></script>
+  <script src="../assets/js/misc.js"></script>
+  <script src="../assets/js/settings.js"></script>
+  <script src="../assets/js/todolist.js"></script>
   <!-- endinject -->
   <!-- Custom js for this page-->
-  <script src="assets/js/wizard.js"></script>
-  <script src="assets/js/test.js"></script>
-  <script src="assets/js/formpickers.js"></script>
+  <script src="../assets/js/wizard.js"></script>
+  <script src="../assets/js/test.js"></script>
+  <script src="../assets/js/formpickers.js"></script>
   <!-- End custom js for this page-->
 </body>
 

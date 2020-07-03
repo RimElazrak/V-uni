@@ -17,9 +17,9 @@
         $_SESSION["mail"]=$mail;
         $_SESSION["logged"]="success";
 
-         $check="SELECT * FROM MEMBRE WHERE EMAIL='$mail' LIMIT 1";
-         $res_check=$mysqli->query($check);
-         while ($membre=$res_check->fetch_assoc()){
+         //$check="SELECT * FROM MEMBRE WHERE EMAIL='$mail' LIMIT 1";
+         //$res_check=$mysqli->query($check);
+         while ($membre=$res_login->fetch_assoc()){
             $etat= $membre['etat'];                  //etat and role are columns in the MEMBRE table. etat stands for the state of the account.
             $role= $membre['role'];                   //role stands for the role of the member, which could be a professor or a student.
             $_SESSION["role"]=$role;
@@ -28,9 +28,10 @@
             if ($etat=="I" && $role=="s")
                 header('Location: account/settings.php');
             if ($etat=="C" && $role=="p")
-                header('Location: account/S-profile.php');                
+                //classe 
+                header('Location: account/profile.php');                
             if ($etat=="C" && $role=="s")
-                header('Location: account/S-profile.php');
+                header('Location: account/profile.php');
          }
     }       
     }
