@@ -85,7 +85,11 @@
                     <a class=\"dropdown-item font-weight-medium\" data-toggle=\"modal\" href=\"#\" data-target=\"#add_class\">
                         Add 
                     </a>";
-                    }echo $addclass;?>
+                    }
+                    else{
+                      $addclass=null ;
+                    }
+                    echo $addclass;?>
               </div>
               
 
@@ -543,8 +547,15 @@
             <div class="collapse" id="page-layouts">
               <ul class="nav flex-column sub-menu">
                <!--to add a new class -->    
-                <li class="nav-item"> <a class="nav-link" href="pages/layout/rtl-layout.html">classe name</a></li>
-                <li class="nav-item d-none d-lg-block"> <a class="nav-link" href="horizontal-menu.html">Horizontal Menu</a></li>
+                <?php 
+                  $query = "SELECT NOM_classe FROM CLASSE WHERE ID_MEMBRE=$id_membre";
+                  $rslt = mysqli_query($mysqli,$query);
+                  while($row= mysqli_fetch_assoc($rslt) ){
+                    foreach ($row as $field =>$value){
+                      echo "<li class=\"nav-item\"> <a class=\"nav-link\" href=\"classe.php\">".$value."</a></li>";
+                    }
+                  }
+                ?>
               </ul>
             </div>
           </li>

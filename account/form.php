@@ -5,7 +5,7 @@ if(isset($_SESSION["mail"]) || isset($_SESSION["role"])){
     $mysqli= new mysqli('127.0.0.1','root','','pfe');
     //  CREATING CLASS
     if(isset($_POST['insertdata'])){
-        $cname= $_POST['cname'];    
+        
         $_SESSION["classe_name"]=$cname;
         $desc= $_POST['description'];
         $mail= $_SESSION['mail'];
@@ -40,16 +40,35 @@ if(isset($_SESSION["mail"]) || isset($_SESSION["role"])){
         $cname= $_POST['cname'];
         $pw= $_POST['cpw'];
         $_SESSION["classe_name"]=$cname;
-        //check if lass exists if it does redirect
+        //check if lass exists if it does redirect OR CHECK WITH IDCLASSE
         $req_classe_info="SELECT * FROM classe WHERE NOM_CLASSE='$cname' AND code='$pw' LIMIT 1" ;
         $res_classe_info=$mysqli->query($req_classe_info);
+        
         if ($res_classe_info->num_rows==0){                       // no user found from 0 lines returned
             echo'<script> alert("Classe name or password incorrect !!!"); </script>';
-            header('Location: classe.php');
+            //header('Location: profile.php');
         }
         else{
             // inserting into classes_joined 
-        
+            $query="SELECT * from classes_joined where id_membre=$id_membre";
+            $result = mysqli_query($mysqli, $query);
+            
+            while($row = mysqli_fetch_array($result)){
+                    $indice = 0;
+                    $success = false;
+                    for($i = 0; $i < 10; $i++)
+                    { 
+                        if ($row[$i]==null)
+                        {   $success = true;
+                            break;
+                        }
+                        $indice = $indice+1;
+                    }
+                    $classe='ID_CLASSE'.$indice;
+                    $req_insert3="INSERT INTO classes_joined ($classe) VALUES ($id_classe)";
+                    $res_insert3=$mysqli->query($req_insert3);
+
+            }
 
 
 
@@ -67,6 +86,7 @@ if(isset($_SESSION["mail"]) || isset($_SESSION["role"])){
 
 /*if($result2 = mysqli_query($mysqli, $req_insert)){
             if(mysqli_num_rows($result2) > 0){
+                
                 while($row = mysqli_fetch_array($result2)){
                         $id=$row[0];  
                         //$req_update="UPDATE Professeur SET ID_CLASSE='$id' WHERE ID_MEMBRE=$id_membre" ;
@@ -101,14 +121,10 @@ if(isset($_SESSION["mail"]) || isset($_SESSION["role"])){
         }
         echo 'id classe is  ';echo $id_classe;
         //to insert id classes into table clases_made
+        
         $query="SELECT * from classes_made where id_membre=$id_membre";
-        if (!$query) {
-        echo 'Impossible d\'exécuter la requête : ' . mysql_error();
-        exit;
-        }
-        if($result == mysqli_query($mysqli, $query)){
-            
-            while($row = mysqli_fetch_array($result)){
+        $result = mysqli_query($mysqli, $query)
+        while($row = mysqli_fetch_array($result)){
                 $indice = 0;
                 $success = false;
                 for($i = 0; $i < 10; $i++)
@@ -124,8 +140,19 @@ if(isset($_SESSION["mail"]) || isset($_SESSION["role"])){
                 $res_insert3=$mysqli->query($req_insert3);
 
             }
-            
-        }*/
+        
+       LIST OF CLASSES FOR NAV LINK
+        
+        while($list = mysql_fetch_array($res_list)) { //is it res list or req test on both
+    //for
+    $list_class="<li class=\"nav-item\"> <a class=\"nav-link\" href=\"classe.php\">";
+     echo $list; 
+    $list_class2="</a></li>";
+ }
+        
+        
+        
+        */
 } 
 
 ?>

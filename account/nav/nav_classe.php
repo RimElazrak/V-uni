@@ -23,8 +23,9 @@
   //======================= CUSTOM PHP FOR PAG = Classe info =====================================
   
   $cl=$_SESSION["classe_name"];
-
-  $req_id="SELECT ID_CLASSE from CLASSE where NOM_CLASSE='$cl'";   //fetch class ID CLASSE
+  
+  //fetch class ID CLASSE
+  $req_id="SELECT ID_CLASSE from CLASSE where NOM_CLASSE='$cl'";   
   $res=$mysqli->query($req_id);
   while($k= $res->fetch_assoc()){
     $id_classe= $k['ID_CLASSE'];
@@ -39,12 +40,27 @@
   while ($desc=$res_desc->fetch_assoc()){
     $description = $desc['DESC_CLASSE'];   
   }
-    
+     //extraire SEMESTRE a partir de la table CLASSE
   while ($fs=$res_sem->fetch_assoc()){                     
-    $sem = $fs['SEMESTRE'];                    //extraire SEMESTRE a partir de la table CLASSE
+    $sem = $fs['SEMESTRE'];                   
   }
-  // 
   
+  // EXTRAIRE LES ID CLASSE creer par le membre
+  //$req_list="SELECT * FROM CLASSE GROUP BY ID_CLASSE, ID_MEMBRE having ID_MEMBRE=$id_membre";  
+ // $req_list="SELECT ID_CLASSE FROM CLASSE WHERE ID_MEMBRE=$id_membre";
+ // $res_list=$mysqli->query($req_list);
+  
+  
+
+
+
+  
+
+
+
+
+
+
 
 
 ?>
@@ -568,9 +584,20 @@
             </a>
             <div class="collapse" id="page-layouts">
               <ul class="nav flex-column sub-menu">
-               <!--to add a new class -->    
-                <li class="nav-item"> <a class="nav-link" href="pages/layout/rtl-layout.html">classe name</a></li>
-                <li class="nav-item d-none d-lg-block"> <a class="nav-link" href="horizontal-menu.html">Horizontal Menu</a></li>
+               <!--to add a new class -->   
+               <!--<li class="nav-item"> <a class="nav-link" href="classe.php">classe name</a></li> -->    
+                <?php 
+              $query = "SELECT NOM_classe FROM CLASSE WHERE ID_MEMBRE=$id_membre";
+              $rslt = mysqli_query($mysqli,$query);
+              while($row= mysqli_fetch_assoc($rslt) ){
+                foreach ($row as $field =>$value){
+                  echo "<li class=\"nav-item\"> <a class=\"nav-link\" href=\"classe.php\">".$value."</a></li>";
+                }
+              }
+                // 5essni nzid 3la kulaa classe na5od infos dialha o nstokihom f $cl o $sem .. (see code up top)
+
+          ?>
+                
               </ul>
             </div>
           </li>
