@@ -20,7 +20,7 @@
     $photo="../assets/images/faces/".$profile['photo'];
     $fullname = ucwords($profile['PRENOM'])." ".strtoupper($profile['NOM']);   
   }
-
+//role
 ?>
 
 <!DOCTYPE html>
@@ -57,13 +57,17 @@
         <ul class="navbar-nav">
           <li class="nav-item nav-search d-none d-md-flex">
             <div class="nav-link">
-              <div class="input-group">
-                <div class="input-group-prepend">
-                  <span class="input-group-text">
-                    <i class="fas fa-search"></i>
-                  </span>
-                </div>
-                <input type="text" class="form-control" placeholder="Search" aria-label="Search">
+              <div class="input-group" >
+
+                <form action="nav/search.php" method="GET">
+                  <div class="input-group-prepend">
+                    <button type="submit" class="btn btn-primary btn-rounded btn-icon">
+                      <i class="fas fa-search"></i>
+                    </button>
+                  </div>
+                  <input type="text" name="query" class="form-control" placeholder="  Search" aria-label="Search" style="background-color: #f5f5f7; padding:10px;">
+                </form>
+
               </div>
             </div>
           </li>
@@ -101,11 +105,11 @@
           <li class="nav-item dropdown">
             <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-toggle="dropdown">
               <i class="fas fa-bell mx-0"></i>
-              <span class="count">16</span>
+              <span class="count">0</span>
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
               <a class="dropdown-item">
-                <p class="mb-0 font-weight-normal float-left">You have 16 new notifications
+                <p class="mb-0 font-weight-normal float-left">You have NO new notifications
                 </p>
                 <span class="badge badge-pill badge-warning float-right">View all</span>
               </a>
@@ -156,11 +160,11 @@
           <li class="nav-item dropdown">
             <a class="nav-link count-indicator dropdown-toggle" id="messageDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
               <i class="fas fa-envelope mx-0"></i>
-              <span class="count">25</span>
+              <span class="count">0</span>
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="messageDropdown">
               <div class="dropdown-item">
-                <p class="mb-0 font-weight-normal float-left">You have 7 unread mails
+                <p class="mb-0 font-weight-normal float-left">You have 0 unread mails
                 </p>
                 <span class="badge badge-info badge-pill float-right">View all</span>
               </div>
@@ -514,7 +518,7 @@
       <!-- partial -->
       <!-- partial:../../partials/_sidebar.html -->
       <nav class="sidebar sidebar-offcanvas" id="sidebar">
-        <br><br><br>
+        <br><br>
         <ul class="nav">
           <li class="nav-item nav-profile">
             <div class="nav-link">
@@ -526,7 +530,7 @@
                 <?php  echo $fullname; ?>
                 </p>
                 <p class="designation">
-                  Super Admin
+                <?php  if ($role="s"){echo "Student";} else{echo "Professeur";}?>
                 </p>
               </div>
             </div>

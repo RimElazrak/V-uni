@@ -7,7 +7,7 @@
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>V-UNI </title>
+  <title>les filiéres</title>
   <!-- plugins:css -->
   <link rel="shortcut icon" href="../assets/images/V-logo-mini.svg" />
 
@@ -20,7 +20,7 @@
 </head>
 
 <body class="boxed-layout" >
-  <div class="container-scroller">
+  <div class="container-scroller"><br><br><br>
     <!-- partial:../../partials/_navbar.html -->
     <?php include ('nav/nav_account.php') ?>
     
@@ -33,51 +33,51 @@
                     <div class="card-body">
                         <div class="row">
                           <div class="col-12">                        
-                            <br><br><br>
+                            
 
                             <div class="row portfolio-grid">
                                 <div class="col-xl-4 col-lg-3 col-md-4 col-sm-8 col-12" style=" margin: AUTO;">
                                 <figure class="effect-text-in">
-                                <img src="../assets/images/samples/300x300/2.jpg" alt="image"/>
-                                <figcaption a href="index-4.html" class="external-link">
+                                <img src="../assets/images/samples/300x300/SMI.jpg" alt="image"/>
+                                <figcaption a href="profile.php" class="external-link">
                                     <h4> - SMI - </h4>
-                                    <p>science mathematique et informatique</p>
+                                    <p>Sciences mathématiques et informatique</p>
                                 </figcaption>
                                 </figure>
                             </div>
                             <div class="col-xl-4 col-lg-3 col-md-4 col-sm-8 col-12"style=" margin: auto;">
                                 <figure class="effect-text-in">
-                                <img src="../assets/images/samples/300x300/4.jpg" alt="image"/>
-                                <figcaption a href="index-4.html" class="external-link">
+                                <img src="../assets/images/samples/300x300/SMA.jpg" alt="image"/>
+                                <figcaption a href="profile.php" class="external-link">
                                     <h4> - SMA - </h4>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+                                    <p>Sciences mathématiques et applications</p>
                                 </figcaption>
                                 </figure>
                             </div>
                             <div class="col-xl-4 col-lg-3 col-md-4 col-sm-8 col-12"style=" margin: auto;">
                                 <figure class="effect-text-in">
-                                <img src="../assets/images/samples/300x300/5.jpg" alt="image"/>
-                                <figcaption a href="index-4.html" class="external-link">
+                                <img src="../assets/images/samples/300x300/SMC.jpg" alt="image"/>
+                                <figcaption a href="profile.php" class="external-link">
                                     <h4> - SMC - </h4>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+                                    <p>Sciences de la Matière Chimie</p>
                                 </figcaption>
                                 </figure>
                             </div>
                             <div class="col-xl-4 col-lg-3 col-md-4 col-sm-8 col-12"style=" margin: auto;">
                                 <figure class="effect-text-in">
-                                <img src="../assets/images/samples/300x300/6.jpg" alt="image"/>
-                                <figcaption a href="index-4.html" class="external-link">
+                                <img src="../assets/images/samples/300x300/SMP.jpg" alt="image"/>
+                                <figcaption a href="profile.php" class="external-link" >
                                     <h4> - SMP - </h4>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+                                    <p>Sciences de la Matière Physique</p>
                                 </figcaption>
                                 </figure>
                             </div>
                             <div class="col-xl-4 col-lg-3 col-md-4 col-sm-8 col-12"style=" margin: auto;">
                                 <figure class="effect-text-in">
-                                <img src="../assets/images/samples/300x300/7.jpg" alt="image"/>
-                                <figcaption a href="index-4.html" class="external-link">
-                                    <h4> - BG - </h4>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+                                <img src="../assets/images/samples/300x300/BG.jpg" alt="image"/>
+                                <figcaption a href="profile.php" class="external-link" >
+                                    <h4> - SVI - </h4>
+                                    <p>Sciences de la vie : Biologie  |  Sciences de la terre et de l’univers : Géologie</p>
                                 </figcaption>
                                 </figure>
                             </div>

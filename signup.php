@@ -78,7 +78,7 @@ function JSalerterror(){
 	swal("Erreur!", "Erreur rencontrée", "error");
 }</script>
 </head>
-<body>     
+<body style="background-color:  #EEEEEE;">     
     <?php 
         include 'assets/menu.php';
     ?>
@@ -88,8 +88,7 @@ function JSalerterror(){
               <!-------------------------------------------->
                     <div class="col-5" id = "vuni">
                         <div class="row">
-                        <img src="assets/img/VUNI.svg" alt="">
-                        <h2 style="font-size: 20; text-align:center">Your gateway to a safe educational environment.</h2>
+                        <img src="assets/img/Group4.svg" alt="VUNI" >
                         </div>
                         <!------------------------------------------->
                         <div class="row">

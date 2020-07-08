@@ -5,7 +5,7 @@ if(isset($_SESSION["mail"]) || isset($_SESSION["role"])){
     $mysqli= new mysqli('127.0.0.1','root','','pfe');
     //  CREATING CLASS
     if(isset($_POST['insertdata'])){
-        
+        $cname=$_POST['cname'];
         $_SESSION["classe_name"]=$cname;
         $desc= $_POST['description'];
         $mail= $_SESSION['mail'];
@@ -13,13 +13,13 @@ if(isset($_SESSION["mail"]) || isset($_SESSION["role"])){
         $csem= $_POST['csem'];
         $cpw= $_POST['cpw'];
         echo $mail;
-        
+        //fetch id member
         $req_id_member="SELECT ID_MEMBRE from MEMBRE where email='$mail'";
         $resm=$mysqli->query($req_id_member);
         while($mmbre= $resm->fetch_assoc()){
             $id_membre= $mmbre['ID_MEMBRE'];
         }
-        echo 'id membre is  ';echo $id_membre;
+
         $req_insert1="INSERT INTO classe (NOM_CLASSE, DESC_CLASSE,code,SEMESTRE,ID_MEMBRE) VALUES ('$cname', '$desc','$cpw','$csem',$id_membre)";
         $res_insert1=$mysqli->query($req_insert1);
                 
@@ -40,40 +40,31 @@ if(isset($_SESSION["mail"]) || isset($_SESSION["role"])){
         $cname= $_POST['cname'];
         $pw= $_POST['cpw'];
         $_SESSION["classe_name"]=$cname;
+        $mail= $_SESSION['mail'];
+        $req_id_member="SELECT ID_MEMBRE from MEMBRE where email='$mail'";
+        $resm=$mysqli->query($req_id_member);
+        while($mmbre= $resm->fetch_assoc()){
+            $id_membre= $mmbre['ID_MEMBRE'];
+        }
         //check if lass exists if it does redirect OR CHECK WITH IDCLASSE
-        $req_classe_info="SELECT * FROM classe WHERE NOM_CLASSE='$cname' AND code='$pw' LIMIT 1" ;
-        $res_classe_info=$mysqli->query($req_classe_info);
         
-        if ($res_classe_info->num_rows==0){                       // no user found from 0 lines returned
+        $req_classe_info="SELECT * FROM classe WHERE NOM_CLASSE='$cname' AND code='$pw' LIMIT 1" ;
+        //fetch the id classe
+        $res_classe_info=$mysqli->query($req_classe_info);
+        while($clid= $res_classe_info->fetch_assoc()){
+            $id_classe= $clid['ID_CLASSE'];
+        }
+        
+        // no classe found i e 0 lines returned
+        if ($res_classe_info->num_rows==0){                       
             echo'<script> alert("Classe name or password incorrect !!!"); </script>';
             //header('Location: profile.php');
         }
         else{
             // inserting into classes_joined 
-            $query="SELECT * from classes_joined where id_membre=$id_membre";
-            $result = mysqli_query($mysqli, $query);
-            
-            while($row = mysqli_fetch_array($result)){
-                    $indice = 0;
-                    $success = false;
-                    for($i = 0; $i < 10; $i++)
-                    { 
-                        if ($row[$i]==null)
-                        {   $success = true;
-                            break;
-                        }
-                        $indice = $indice+1;
-                    }
-                    $classe='ID_CLASSE'.$indice;
-                    $req_insert3="INSERT INTO classes_joined ($classe) VALUES ($id_classe)";
-                    $res_insert3=$mysqli->query($req_insert3);
-
-            }
-
-
-
-
-
+            $req_insert2="INSERT INTO class_joined (ID_MEMBRE,ID_CLASSE) VALUES ($id_membre, $id_classe)";
+            $res_insert2=$mysqli->query($req_insert2);
+ 
             header('Location: classe.php');
         }
         //insert data into class joined table 
@@ -152,6 +143,27 @@ if(isset($_SESSION["mail"]) || isset($_SESSION["role"])){
         
         
         
+
+
+ $query="SELECT * from classes_joined where id_membre=$id_membre";
+            $result = mysqli_query($mysqli, $query);
+            
+            while($row = mysqli_fetch_array($result)){
+                    $indice = 0;
+                    $success = false;
+                    for($i = 0; $i < 10; $i++)
+                    { 
+                        if ($row[$i]==null)
+                        {   $success = true;
+                            break;
+                        }
+                        $indice = $indice+1;
+                    }
+                    $classe='ID_CLASSE'.$indice;
+                    $req_insert3="INSERT INTO classes_joined ($classe) VALUES ($id_classe)";
+                    $res_insert3=$mysqli->query($req_insert3);
+
+            }
         */
 } 
 

@@ -426,13 +426,12 @@ else {
   <link rel="stylesheet" href="../assets/vendors/css/vendor.bundle.addons.css">
   <!-- endinject -->
   <!-- plugin css for this page -->
-  <link rel="icon" type="image/png" href="../assets/images/V.png">
 
   <!-- End plugin css for this page -->
   <!-- inject:css -->
   <link rel="stylesheet" href="../assets/css/style.css">
   <!-- endinject -->
-  <link rel="shortcut icon" href="../assets/images/favicon.png" />
+  <link rel="shortcut icon" href="../assets/images/V.png" />
    <!-- plugins:js -->
    <script src="../assets/vendors/js/vendor.bundle.base.js"></script>
   <script src="../assets/vendors/js/vendor.bundle.addons.js"></script>

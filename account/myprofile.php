@@ -37,7 +37,7 @@
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Melody Admin</title>
+  <title>Mon profile</title>
   <!-- plugins:css -->
   <link rel="stylesheet" href="../assets/vendors/iconfonts/font-awesome/css/all.min.css">
   <link rel="stylesheet" href="../assets/vendors/css/vendor.bundle.base.css">
@@ -77,7 +77,7 @@
                     <div class="card-body">
                         <img src="<?php echo $photo; ?>" class="img-lg rounded" alt="profile image"/>
                         <h4><?php  echo $fullname; ?></h4>
-                        <p class="text-muted">Student </p>
+                        <p class="text-muted"><?php  if ($role="s"){echo "Student";} else{echo "Professor";}  ?></p>
                         <p class="text-muted"><?php  echo $filiere; ?>  |  S6 </p>
                         <p class="mt-4 card-text">
                                 CAPTION // Lorem ipsum dolor sit amet, consectetuer adipiscing elit.

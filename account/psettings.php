@@ -27,9 +27,16 @@ $req_update="UPDATE MEMBRE SET DATE_NAISSANCE='$birthdate', TELEPHONE='$tel', CI
 $res_insert=$mysqli->query($req_insert);
 $res_update=$mysqli->query($req_update);
 
+$req_profile="SELECT * FROM MEMBRE WHERE EMAIL='$mail'";
+$res_profile=$mysqli->query($req_profile);
+
+while ($profile=$res_profile->fetch_assoc()){
+  $photo="assets/images/faces/".$profile['photo'];
+  $fullname = ucwords($profile['PRENOM'])." ".strtoupper($profile['NOM']); 
+}
 if($mysqli){
         
-  header('Location: profile.php');
+  header('Location: filieres.php');
 }
 else{
   echo'<script> alert("ERROR : Data Not saved !!"); </script>';
@@ -54,14 +61,14 @@ else {
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Melody Admin</title>
+  <title>Parametre du Profile</title>
   <!-- plugins:css -->
   <link rel="icon" type="image/png" href="../VUNI-logo.png">
 
   <link rel="stylesheet" href="../assets/vendors/iconfonts/font-awesome/css/all.min.css">
   <link rel="stylesheet" href="../assets/vendors/css/vendor.bundle.base.css">
   <link rel="stylesheet" href="../assets/vendors/css/vendor.bundle.addons.css">
-  <link rel="shortcut icon" href="../assets/images/favicon.png" />
+  <link rel="shortcut icon" href="../assets/images/V-logo-mini.svg" />
   
   <!--<link rel="stylesheet" href="css/style.css">  
 
@@ -87,171 +94,10 @@ else {
   <div class="container-scroller">
     <!-- partial:../../partials/_navbar.html -->
     
-    <!-- model -->
+    
+    <?php include ('nav/nav_account.php') ?>
    
-    <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row default-layout-navbar">
-      <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-        <a class="navbar-brand brand-logo" href="index-4.html"><img src="../assets/images/V-logo.svg" alt="logo"/></a>
-        <a class="navbar-brand brand-logo-mini" href="index-4.html"><img src="../assets/images/V-logo-mini.svg" alt="logo"/></a>
-      </div>
-      <div class="navbar-menu-wrapper d-flex align-items-stretch">
-        <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
-          <span class="fas fa-bars"></span>
-        </button>
-        <ul class="navbar-nav">
-          <li class="nav-item nav-search d-none d-md-flex">
-            <div class="nav-link">
-              <div class="input-group">
-                <div class="input-group-prepend">
-                  <span class="input-group-text">
-                    <i class="fas fa-search"></i>
-                  </span>
-                </div>
-                <input type="text" class="form-control" placeholder="Search" aria-label="Search">
-              </div>
-            </div>
-          </li>
-        </ul>
-        <ul class="navbar-nav navbar-nav-right">
-          
-          
-          <li class="nav-item dropdown">
-            <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-toggle="dropdown">
-              <i class="fas fa-bell mx-0"></i>
-              <span class="count">16</span>
-            </a>
-            <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
-              <a class="dropdown-item">
-                <p class="mb-0 font-weight-normal float-left">You have 16 new notifications
-                </p>
-                <span class="badge badge-pill badge-warning float-right">View all</span>
-              </a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item preview-item">
-                <div class="preview-thumbnail">
-                  <div class="preview-icon bg-danger">
-                    <i class="fas fa-exclamation-circle mx-0"></i>
-                  </div>
-                </div>
-                <div class="preview-item-content">
-                  <h6 class="preview-subject font-weight-medium">Application Error</h6>
-                  <p class="font-weight-light small-text">
-                    Just now
-                  </p>
-                </div>
-              </a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item preview-item">
-                <div class="preview-thumbnail">
-                  <div class="preview-icon bg-warning">
-                    <i class="fas fa-wrench mx-0"></i>
-                  </div>
-                </div>
-                <div class="preview-item-content">
-                  <h6 class="preview-subject font-weight-medium">Settings</h6>
-                  <p class="font-weight-light small-text">
-                    Private message
-                  </p>
-                </div>
-              </a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item preview-item">
-                <div class="preview-thumbnail">
-                  <div class="preview-icon bg-info">
-                    <i class="far fa-envelope mx-0"></i>
-                  </div>
-                </div>
-                <div class="preview-item-content">
-                  <h6 class="preview-subject font-weight-medium">New user registration</h6>
-                  <p class="font-weight-light small-text">
-                    2 days ago
-                  </p>
-                </div>
-              </a>
-            </div>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link count-indicator dropdown-toggle" id="messageDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
-              <i class="fas fa-envelope mx-0"></i>
-              <span class="count">25</span>
-            </a>
-            <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="messageDropdown">
-              <div class="dropdown-item">
-                <p class="mb-0 font-weight-normal float-left">You have 7 unread mails
-                </p>
-                <span class="badge badge-info badge-pill float-right">View all</span>
-              </div>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item preview-item">
-                <div class="preview-thumbnail">
-                    <img src="images/faces/face4.jpg" alt="image" class="profile-pic">
-                </div>
-                <div class="preview-item-content flex-grow">
-                  <h6 class="preview-subject ellipsis font-weight-medium">David Grey
-                    <span class="float-right font-weight-light small-text">1 Minutes ago</span>
-                  </h6>
-                  <p class="font-weight-light small-text">
-                    The meeting is cancelled
-                  </p>
-                </div>
-              </a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item preview-item">
-                <div class="preview-thumbnail">
-                    <img src="assets/images/faces/face2.jpg" alt="image" class="profile-pic">
-                </div>
-                <div class="preview-item-content flex-grow">
-                  <h6 class="preview-subject ellipsis font-weight-medium">Tim Cook
-                    <span class="float-right font-weight-light small-text">15 Minutes ago</span>
-                  </h6>
-                  <p class="font-weight-light small-text">
-                    New product launch
-                  </p>
-                </div>
-              </a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item preview-item">
-                <div class="preview-thumbnail">
-                    <img src="assets/images/faces/face3.jpg" alt="image" class="profile-pic">
-                </div>
-                <div class="preview-item-content flex-grow">
-                  <h6 class="preview-subject ellipsis font-weight-medium"> Johnson
-                    <span class="float-right font-weight-light small-text">18 Minutes ago</span>
-                  </h6>
-                  <p class="font-weight-light small-text">
-                    Upcoming board meeting
-                  </p>
-                </div>
-              </a>
-            </div>
-          </li>
-          <li class="nav-item nav-profile dropdown">
-            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-              <img src="assets/images/faces/profile.svg" alt="profile"/>
-            </a>
-            <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
-              <a class="dropdown-item">
-                <i class="fas fa-cog text-primary"></i>
-                Settings
-              </a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="home.php">
-                <i class="fas fa-power-off text-primary"></i>
-                Logout
-              </a>
-            </div>
-          </li>
-          <li class="nav-item nav-settings d-none d-lg-block">
-            <a class="nav-link" href="#">
-              <i class="fas fa-ellipsis-h"></i>
-            </a>
-          </li>
-        </ul>
-        <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
-          <span class="fas fa-bars"></span>
-        </button>
-      </div>
-    </nav>
+    
     <!-- partial -->
     <div class="container-fluid page-body-wrapper">
       <!-- partial:../../partials/_settings-panel.html -->
@@ -428,8 +274,8 @@ else {
      
       <!-- partial -->
       <div class="main-panel" style="width: calc(100% - 0px);" >
-        <div class="content-wrapper">
-          <div class="page-header">
+        <div class="content-wrapper"><br>
+          <div class="page-header"> 
             <h3 class="page-title">
                 Profile Settings
             </h3>
@@ -441,14 +287,14 @@ else {
             <div class="col-12 grid-margin">
               <div class="card" style="height: 700px;" >
                 <div class="card-body" style="height: 500px;">
-                  <h4 class="card-title">Welcome Professor. Please enter your information..</h4>
+                  <h4 class="card-title">Bonjour professeur. Veuillez entrer vos informations ..</h4>
                   <div style="color:red; text-align:center; font-weight:bold;"></div>
 
                   <form id="example-vertical-wizard" name = "form" method="post">
                     <div>
-                      <h3>Account</h3>
+                      <h3>Compte</h3>
                       <section>
-                        <h4>Account</h4>
+                        <h4>Compte</h4>
                         <div class="form-group">
                           <label for="pseudo">Pseudonyme *</label>
                           <input id="pseudo" name="pseudo" type="text" placeholder="Pseudonyme" class="required form-control" required>
@@ -499,9 +345,9 @@ else {
 
                         
                       </section>
-                      <h3>Finish</h3>
+                      <h3>Finir</h3>
                       <section>
-                        <h4>Finish</h4>
+                        <h4>Finir</h4>
                         <div class="form-check"  id = "h">
                           <label class="form-check-label" >
                             <input input type="checkbox" name="agree" id="agree" required="" aria-required="true" class="checkbox">

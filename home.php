@@ -29,9 +29,9 @@
                 header('Location: account/settings.php');
             if ($etat=="C" && $role=="p")
                 //classe 
-                header('Location: account/profile.php');                
+                header('Location: account/filieres.php');                
             if ($etat=="C" && $role=="s")
-                header('Location: account/profile.php');
+                header('Location: account/filieres.php');
          }
     }       
     }

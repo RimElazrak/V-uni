@@ -127,7 +127,7 @@
                     <a class=\"dropdown-item font-weight-medium\" data-toggle=\"modal\" href=\"#\" data-target=\"#add_class\">
                         Add 
                     </a>";
-                    }echo $addclass;?>
+                    echo $addclass;}?>
               </div>
               
 
