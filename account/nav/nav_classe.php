@@ -22,7 +22,10 @@
     }
   //======================= CUSTOM PHP FOR PAG = Classe info =====================================
   
-  $cl=$_SESSION["classe_name"];
+  if (isset($_GET["test1"]))
+  $cl = $_GET["test1"];
+else
+ $cl=$_SESSION["classe_name"];
   
   //fetch class ID CLASSE
   $req_id="SELECT ID_CLASSE from CLASSE where NOM_CLASSE='$cl'";   
@@ -98,15 +101,19 @@
         </button>
         <ul class="navbar-nav">
           <li class="nav-item nav-search d-none d-md-flex">
-            <div class="nav-link">
-              <div class="input-group">
-                <div class="input-group-prepend">
-                  <span class="input-group-text">
-                    <i class="fas fa-search"></i>
-                  </span>
-                </div>
-                <input type="text" class="form-control" placeholder="Search" aria-label="Search">
-              </div>
+            <div class="nav-link"><form action="search.php" method="GET">
+              <div class="input-group" >
+
+                
+                  <div class="input-group-prepend">
+                    <button type="submit" class="btn btn-primary btn-rounded btn-icon">
+                      <i class="fas fa-search"></i>
+                    </button>
+                  </div>
+                  <input type="text" name="query" class="form-control" placeholder="  Search" aria-label="Search" style="background-color: #f5f5f7; padding:10px;">
+                
+
+              </div></form>
             </div>
           </li>
         </ul>
@@ -255,7 +262,7 @@
                 Settings
               </a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item">
+              <a href = "logout.php" class="dropdown-item">
                 <i class="fas fa-power-off text-primary"></i>
                 Logout
               </a>
@@ -586,14 +593,31 @@
               <ul class="nav flex-column sub-menu">
                <!--to add a new class -->   
                <!--<li class="nav-item"> <a class="nav-link" href="classe.php">classe name</a></li> -->    
-                <?php 
+               <?php 
+                if ($_SESSION["role"] = "p") {
+                  echo "<h6> classes made </h6>";
               $query = "SELECT NOM_classe FROM CLASSE WHERE ID_MEMBRE=$id_membre";
               $rslt = mysqli_query($mysqli,$query);
               while($row= mysqli_fetch_assoc($rslt) ){
                 foreach ($row as $field =>$value){
-                  echo "<li class=\"nav-item\"> <a class=\"nav-link\" href=\"classe.php\">".$value."</a></li>";
+                  echo "<li class=\"nav-item\"> <a id = ".$value." onclick='help($value)' class=\"nav-link\" href='classe.php?test1=$value'>".$value."</a></li>";
                 }
               }
+            }
+
+              $query1 = "SELECT nom_classe FROM CLASS_JOINED WHERE ID_MEMBRE=$id_membre";
+              $res1 = mysqli_query($mysqli,$query1);
+              if ($res1->num_rows > 0) 
+                echo "<h6> classes joined </h6>";
+
+              $rslt1 = mysqli_query($mysqli,$query1);
+              while($row1= mysqli_fetch_assoc($rslt1) ){
+                foreach ($row1 as $field =>$value){
+                  echo "<li class=\"nav-item\"> <a id = ".$value." onclick='help($value)' class=\"nav-link\" href='classe.php?test1=$value'>".$value."</a></li>";
+                }
+              }
+
+            
                 // 5essni nzid 3la kulaa classe na5od infos dialha o nstokihom f $cl o $sem .. (see code up top)
 
           ?>

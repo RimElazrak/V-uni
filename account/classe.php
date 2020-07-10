@@ -1,4 +1,10 @@
+<?php
+session_start();
+$mysqli= new mysqli('127.0.0.1','root','','pfe'); 
+ if (isset($_GET["test1"]))
+  $_SESSION["class_name"] = $_GET["test1"];
 
+?>
 <!DOCTYPE html>
 <html lang="en">
 

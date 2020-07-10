@@ -11,7 +11,7 @@
           $id_membre= $membre['ID_MEMBRE'];
         }
       $req_profile="SELECT * FROM MEMBRE WHERE EMAIL='$mail'";
-      $req_filiere="SELECT FILIERE FROM ETUDIANT WHERE ID_MEMBRE ='$id_membre'";
+      $req_filiere="SELECT FILIERE FROM ETUDIANT WHERE ID_MEMBRE =$id_membre";
     
       $res_profile=$mysqli->query($req_profile);
       $res_filiere=$mysqli->query($req_filiere);
@@ -61,101 +61,13 @@
       <div class="main-panel" >
         <div class="content-wrapper">
           <div class="page-header">
-            <h3 class="page-title">
-                Profile Settings
-            </h3>
+            
             
           </div>
           
-          <!--vertical wizard-->
+        
 
-          <div class="row" >
-
-            <div class="col-md-4 grid-margin stretch-card pricing-card">
-              <div class="card border-primary border pricing-card-body">
-                  <div class="card text-center">
-                    <div class="card-body">
-                        <img src="<?php echo $photo; ?>" class="img-lg rounded" alt="profile image"/>
-                        <h4><?php  echo $fullname; ?></h4>
-                        <p class="text-muted"><?php  if ($role="s"){echo "Student";} else{echo "Professor";}  ?></p>
-                        <p class="text-muted"><?php  echo $filiere; ?>  |  S6 </p>
-                        <p class="mt-4 card-text">
-                                CAPTION // Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-                                Aenean commodo ligula eget dolor. Lorem
-                        </p>
-                        <div class="badge badge-pill badge-outline-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Student badge"><i class="fa fa-graduation-cap"></i></div>
-                        <div class="badge badge-pill badge-primary" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="registered user"><i class="fa fa-user"></i></div><br><br>
-                        <div class="border-top pt-3">
-                            <div class="row">
-                                <div class="col-4">
-                                    <h6>5896</h6>
-                                    <p>Post</p>
-                                </div>
-                                <div class="col-4">
-                                    <h6>1596</h6>
-                                    <p>Followers</p>
-                                </div>
-                                <div class="col-4">
-                                    <h6>7896</h6>
-                                    <p>Likes</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-              </div>
-                
-            </div>
-            <div class="col-md-8 grid-margin stretch-card">
-                <div class="card">
-                    <div class="card-body">
-                        <h4 class="card-title">Updates</h4>
-                        <div class="py-4">
-                        <p class="clearfix">
-                          <span class="float-left">
-                            Status
-                          </span>
-                          <span class="float-right text-muted">
-                            Active
-                          </span>
-                        </p>
-                        <p class="clearfix">
-                          <span class="float-left">
-                            Phone
-                          </span>
-                          <span class="float-right text-muted">
-                            006 3435 22
-                          </span>
-                        </p>
-                        <p class="clearfix">
-                          <span class="float-left">
-                            Mail
-                          </span>
-                          <span class="float-right text-muted">
-                            Jacod@testmail.com
-                          </span>
-                        </p>
-                        <p class="clearfix">
-                          <span class="float-left">
-                            Facebook
-                          </span>
-                          <span class="float-right text-muted">
-                            <a href="#">David Grey</a>
-                          </span>
-                        </p>
-                        <p class="clearfix">
-                          <span class="float-left">
-                            Twitter
-                          </span>
-                          <span class="float-right text-muted">
-                            <a href="#">@davidgrey</a>
-                          </span>
-                        </p>
-                      </div>
-                    </div>
-                </div>
-            </div>
-          </div>
+         
           <div class="row">
             <div class="col-12">
               <div class="card">
@@ -164,8 +76,13 @@
                     <div class="col-lg-4">
                       <div class="border-bottom text-center pb-4">
                         <img src="<?php echo $photo; ?>" alt="profile" class="img-lg rounded-circle mb-3">
-                        <p>Bureau Oberhaeuser is a design bureau focused on Information- and Interface Design. </p>
-                        
+                        <h4><?php  echo $fullname; ?> </h4>
+
+                        <p class="text-muted"><?php  if ($role="s"){echo "Student";} else{echo "Professor";}  ?></p>               
+                        <p class="text-muted"><?php  //echo $filiere; ?> SMI  |  S6 </p>
+                        <div class="badge badge-pill badge-outline-primary" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Student badge"><i class="fa fa-graduation-cap"></i></div>
+                        <div class="badge badge-pill badge-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="registered user"><i class="fa fa-user"></i></div><br><br>
+                      
                       </div>
                       
                       <div class="border-bottom py-4">
@@ -180,13 +97,14 @@
                           </div>
                         </div>
                       </div>
+
                       <div class="py-4">
                         <p class="clearfix">
                           <span class="float-left">
                             Status
                           </span>
                           <span class="float-right text-muted">
-                            Completed
+                            Active
                           </span>
                         </p>
                         <p class="clearfix">
@@ -194,7 +112,7 @@
                             Phone
                           </span>
                           <span class="float-right text-muted">
-                            006 3435 22
+                            +212 612345678
                           </span>
                         </p>
                         <p class="clearfix">
@@ -202,32 +120,40 @@
                             Mail
                           </span>
                           <span class="float-right text-muted">
-                            Jacod@testmail.com
+                            rim@testmail.com
                           </span>
                         </p>
                         <p class="clearfix">
                           <span class="float-left">
-                            Filiere
+                            CNE
                           </span>
                           <span class="float-right text-muted">
-                            <a href="#">David Grey</a>
+                            R1331103311
                           </span>
                         </p>
                         <p class="clearfix">
                           <span class="float-left">
-                            Twitter
+                            Apogee number
                           </span>
                           <span class="float-right text-muted">
-                            <a href="#">@davidgrey</a>
+                            17508080
+                          </span>
+                        </p>
+                        <p class="clearfix">
+                          <span class="float-left">
+                            Country of origin
+                          </span>
+                          <span class="float-right text-muted">
+                            Morocco
                           </span>
                         </p>
                       </div>
-                      <button class="btn btn-primary btn-block">Edit</button>
-                    </div>
+
+                        </div>
                     <div class="col-lg-8 pl-lg-5">
                       <div class="d-flex justify-content-between">
                         <div>
-                          <h3><?php  echo $fullname; ?></h3>
+                          <h3>Profile</h3>
                           <div class="d-flex align-items-center">
                             <h5 class="mb-0 mr-2 text-muted">SMI</h5>
                           </div>
@@ -236,7 +162,7 @@
                           <button class="btn btn-outline-secondary btn-icon">
                             <i class="far fa-envelope"></i>
                           </button>
-                          <button class="btn btn-primary">Request</button>
+                          <button class="btn btn-primary"> Edit your information</button>
                         </div>
                       </div>
                       <div class="mt-4 py-2 border-top border-bottom">
@@ -260,7 +186,7 @@
                               <small class="ml-4 text-muted"><i class="far fa-clock mr-1"></i>10 hours</small>
                             </h6>
                             <p>
-                              There is no better advertisement campaign that is low cost and also successful at the same time.
+                              If anyone has any question about C programming feel free to ask in the comments!!
                             </p>
                             <p class="small text-muted mt-2 mb-0">
                               <span>

@@ -14,15 +14,20 @@ if(isset($_SESSION["mail"]) || isset($_SESSION["role"])){
         $cpw= $_POST['cpw'];
         echo $mail;
         //fetch id member
+
         $req_id_member="SELECT ID_MEMBRE from MEMBRE where email='$mail'";
+
         $resm=$mysqli->query($req_id_member);
         while($mmbre= $resm->fetch_assoc()){
             $id_membre= $mmbre['ID_MEMBRE'];
         }
-
+        $req_check_name = "SELECT * FROM classe WHERE NOM_CLASSE= '$cname'";
+        $res_check = mysqli_query($mysqli, $req_check_name);
+        if (mysqli_num_rows($res_check) == 0)
+        {
         $req_insert1="INSERT INTO classe (NOM_CLASSE, DESC_CLASSE,code,SEMESTRE,ID_MEMBRE) VALUES ('$cname', '$desc','$cpw','$csem',$id_membre)";
         $res_insert1=$mysqli->query($req_insert1);
-                
+        }       
         if($mysqli){
              echo'<script> alert("Data saved !!"); </script>';
             header('Location: classe.php');
@@ -62,7 +67,7 @@ if(isset($_SESSION["mail"]) || isset($_SESSION["role"])){
         }
         else{
             // inserting into classes_joined 
-            $req_insert2="INSERT INTO class_joined (ID_MEMBRE,ID_CLASSE) VALUES ($id_membre, $id_classe)";
+            $req_insert2="INSERT INTO class_joined (ID_MEMBRE,ID_CLASSE,nom_classe) VALUES ($id_membre, $id_classe, '$cname')";
             $res_insert2=$mysqli->query($req_insert2);
  
             header('Location: classe.php');
