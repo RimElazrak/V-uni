@@ -13,7 +13,7 @@
           $id_membre= $membre['ID_MEMBRE'];
           $phone = $membre['TELEPHONE'];
           $natio = $membre['NATIONALITE'];
-          $role = $membre['role'];
+          $role1 = $membre['role'];
           $photo="../assets/images/faces/".$membre['photo'];
           $fullnami = ucwords($membre['PRENOM'])." ".strtoupper($membre['NOM']); 
         
@@ -27,31 +27,36 @@
     
       //$res_profile=$mysqli->query($req_profile);
       $res_filiere=$mysqli->query($req_filiere);
+   // $Departement1 = "hello";
+      if ($role1 == "s") {
     
-        
-      while ($f=$res_filiere->fetch_assoc()){                     
-          $filiere = $f['FILIERE']; 
-          if ($role == "s") {
-            $cne = $f['CNE'];
-            $appoge = $f['APOGEE'];
-            }
+            $Departement1 = NULL;
+            $ppr = NULL;
+            
+      }
             else
             {
               $cne = NULL;
               $appoge = NULL;
+            
               
-          $req_pro = "SELECT * FROM PROFESSUER WHERE ID_MEMBRE =$id_membre";
+          $req_pro = "SELECT * FROM professeur WHERE ID_MEMBRE =$id_membre";
           $res_pro = $mysqli->query($req_pro);
           while($pro=$res_pro->fetch_assoc()) {
             $ppr = $pro['PPR'];
-            $Departement = $pro['DEPARTEMENT'];
+            $Departement1 = $pro['DEPARTEMENT'];
           }
             }
-          
+            while ($f=$res_filiere->fetch_assoc()){                    
+                $filiere = $f['FILIERE']; 
+                //  echo "hello";
+                  $cne = $f['CNE'];
+                  $appoge = $f['APOGEE'];
+            }
                                                         //extraire nom de filiere a partir de la table ETUDIANT
-        }
+        
         
      
-  }  
+    }
   include('oprofile.html');
 ?>

@@ -34,7 +34,7 @@ $res=$mysqli->query($req_membre);
                         }
                         else
                         {                      
-$req_insert="INSERT INTO PROFESSEUR VALUES ('$id_membre', '$ppr', '$dept',null)";
+$req_insert="INSERT INTO professeur VALUES ('$id_membre', '$ppr', '$dept')";
 $res_insert=$mysqli->query($req_insert);
                       }
 $req_update="UPDATE MEMBRE SET DATE_NAISSANCE='$birthdate', TELEPHONE='$tel', CIN='$cin', NATIONALITE='$nat', PSEUDONYME='$pseudo', ETAT='C' WHERE ID_MEMBRE=$id_membre";
