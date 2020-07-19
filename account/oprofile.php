@@ -39,6 +39,13 @@
             {
               $cne = NULL;
               $appoge = NULL;
+              
+          $req_pro = "SELECT * FROM PROFESSUER WHERE ID_MEMBRE =$id_membre";
+          $res_pro = $mysqli->query($req_pro);
+          while($pro=$res_pro->fetch_assoc()) {
+            $ppr = $pro['PPR'];
+            $Departement = $pro['DEPARTEMENT'];
+          }
             }
           
                                                         //extraire nom de filiere a partir de la table ETUDIANT

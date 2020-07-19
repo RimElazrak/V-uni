@@ -13,17 +13,24 @@
         }*/
         $role1 = $_SESSION["role"];
         $phone = $_SESSION['phone'];
+        $natio = $_SESSION['NATIONALITE'];
+        $id_membre = $_SESSION['id_membre'];
         if ($_SESSION['role'] == "s") {
         $cne = $_SESSION['cne'];
         $appoge = $_SESSION['appoge'];
         }
         else
         {
+          $req_pro = "SELECT * FROM professeur WHERE ID_MEMBRE =$id_membre";
+          $res_pro = $mysqli->query($req_pro);
+          while($pro=$res_pro->fetch_assoc()) {
+            $ppr = $pro['PPR'];
+            $Departement = $pro['DEPARTEMENT'];
+          }
           $cne = NULL;
           $appoge = NULL;
         }
-        $natio = $_SESSION['NATIONALITE'];
-       $id_membre = $_SESSION['id_membre'];
+    
       $req_profile="SELECT * FROM MEMBRE WHERE EMAIL='$mail'";
       $req_filiere="SELECT FILIERE FROM ETUDIANT WHERE ID_MEMBRE =$id_membre";
     

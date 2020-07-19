@@ -93,22 +93,40 @@
                             <?php echo $mail; ?>
                           </span>
                         </p>
-                        <p class="clearfix">
-                          <span class="float-left">
+                        <?php if($role1 == "s") {
+                          echo " <p class='clearfix'>
+                          <span class='float-left'>
                             CNE
                           </span>
-                          <span class="float-right text-muted">
-                            <?php echo $cne; ?>
+                          <span class='float-right text-muted'>
+                              $cne
                           </span>
                         </p>
-                        <p class="clearfix">
-                          <span class="float-left">
+                        <p class='clearfix'>
+                          <span class='float-left'>
                             Apogee number
                           </span>
-                          <span class="float-right text-muted">
-                            <?php echo $appoge; ?>
+                          <span class='float-right text-muted'>
+                             $appoge
                           </span>
-                        </p>
+                        </p> ";}
+                        else
+                          echo " <p class='clearfix'>
+                            <span class='float-left'>
+                              Departement
+                            </span>
+                            <span class='float-right text-muted'>
+                               $Departement
+                            </span>
+                          </p>
+                          <p class='clearfix'>
+                            <span class='float-left'>
+                             PPR
+                            </span>
+                            <span class='float-right text-muted'>
+                               $ppr
+                            </span>
+                          </p> "; ?>
                         <p class="clearfix">
                           <span class="float-left">
                             Country of origin
