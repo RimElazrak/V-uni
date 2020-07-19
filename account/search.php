@@ -65,7 +65,7 @@
                               <div class=\"card\">
                                   <div class=\"card-body\">
                                       <div class=\"d-flex flex-row\">
-                                          <img src=\"../assets/images/faces/$results[12]\" class=\"img-lg rounded\" alt=\"profile image\">
+                                       <a href='oprofile.php?mem=$results[4]'>   <img src=\"../assets/images/faces/$results[12]\" class=\"img-lg rounded\" alt=\"profile image\"></a>
                                           <div class=\"ml-3\">
                                               <h6>$results[1].$results[2]</h6>
                                               <p class=\"text-muted\">Pseudo : $results[9]</p>

@@ -6,6 +6,8 @@ $mysqli= new mysqli('127.0.0.1','root','','pfe');
   $_SESSION["class_name"] = $_GET["test1"];
   $cname = $_GET["test1"];
  }
+ else
+ $cname = NULL;
  $req_cid = "SELECT ID_CLASSE FROM CLASSE WHERE NOM_CLASSE='$cname'";
       $res_cid = $mysqli->query($req_cid);
       while($C= $res_cid->fetch_assoc())
@@ -51,7 +53,7 @@ $mysqli= new mysqli('127.0.0.1','root','','pfe');
     $res_classe=$mysqli->query($req_classe);
   
     while ($profile=$res_profile->fetch_assoc()){
-        $pdp="images/faces/".$profile['photo'];
+        $pdp="../assets/images/faces/".$profile['photo'];
         $full_name = ucwords($profile['PRENOM'])." ".strtoupper($profile['NOM']);   
       }
       
@@ -104,12 +106,12 @@ $mysqli= new mysqli('127.0.0.1','root','','pfe');
                      $res_deleteComment=$mysqli->query($req_deleteComment);
                      if($res_deleteComment){
            
-                       echo "<SCRIPT>alert('Comment deleted SUCCeSSFULLY');document.location='profile.php';</SCRIPT>";
+                       echo "<SCRIPT>alert('Comment deleted SUCCeSSFULLY');document.location='classe.php?test1=$cname';</SCRIPT>";
            
                      }
                    }
                    else 
-                   echo "<SCRIPT>alert('YOU CANNOT DELETE THE comment BECAUSE YOU ARE NOT ITS OWNER');document.location='profile.php';</SCRIPT>";
+                   echo "<SCRIPT>alert('YOU CANNOT DELETE THE comment BECAUSE YOU ARE NOT ITS OWNER');document.location='classe.php?test1=$cname';</SCRIPT>";
                   }
                 
   

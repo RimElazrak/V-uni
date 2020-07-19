@@ -154,9 +154,7 @@
     opacity: 1;
   }
 }
-#hello {
-  display : none;
-}
+
 @-o-keyframes flash {
   0% {
     opacity: 1;

@@ -24,8 +24,7 @@ function getName($n) {                  // generating random input names  FOR UN
   return $randomString; 
 
 }   
-        echo "hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh"          ;        
-
+      
   $req_membre="SELECT ID_MEMBRE from MEMBRE where email='$mail'";
   $res=$mysqli->query($req_membre);
   while($membre= $res->fetch_assoc())
@@ -41,7 +40,7 @@ function getName($n) {                  // generating random input names  FOR UN
   $res_classe=$mysqli->query($req_classe);
 
   while ($profile=$res_profile->fetch_assoc()){
-      $pdp="images/faces/".$profile['photo'];
+      $pdp="../assets/images/faces/".$profile['photo'];
       $full_name = ucwords($profile['PRENOM'])." ".strtoupper($profile['NOM']);   
     }
     
@@ -66,7 +65,6 @@ function getName($n) {                  // generating random input names  FOR UN
       $commentct=$_POST["$comment"];        //comment content
       //$tempo= "post".$token;
       $postid=$_POST["t$comment"];
-      echo "aaaaaaaaaa";
       $req_cmnt="INSERT INTO commentaire VALUES(NULL, '$commentct', '$current', '$id_membre', '$postid')";
       $res_cmnt=$mysqli->query($req_cmnt);
       header('Location: ' . basename($_SERVER['PHP_SELF'])."?idfiliere=$filiere_id");
@@ -93,12 +91,12 @@ function getName($n) {                  // generating random input names  FOR UN
                    $res_deleteComment=$mysqli->query($req_deleteComment);
                    if($res_deleteComment){
          
-                     echo "<SCRIPT>alert('Comment deleted SUCCeSSFULLY');document.location='profile.php';</SCRIPT>";
+                     echo "<SCRIPT>alert('Comment deleted SUCCeSSFULLY');document.location='profile.php?idfiliere=4';</SCRIPT>";
          
                    }
                  }
                  else 
-                 echo "<SCRIPT>alert('YOU CANNOT DELETE THE comment BECAUSE YOU ARE NOT ITS OWNER');document.location='profile.php';</SCRIPT>";
+                 echo "<SCRIPT>alert('YOU CANNOT DELETE THE comment BECAUSE YOU ARE NOT ITS OWNER');document.location='profile.phpidfiliere=4';</SCRIPT>";
                 }
               
 
@@ -168,7 +166,7 @@ function getName($n) {                  // generating random input names  FOR UN
         $date=$pubs['DATE_PUB'];
         //$visib=$pubs['visibilite'];
         $id_m = $pubs['ID_MEMBRE'];
-        echo $id_m;
+   
         $req_getfullname="SELECT NOM, PRENOM, photo from MEMBRE WHERE MEMBRE.ID_MEMBRE='$id_m'";
         $res_getfullname=$mysqli->query($req_getfullname);
         while ($info_membre=$res_getfullname->fetch_assoc())

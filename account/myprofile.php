@@ -11,9 +11,17 @@
           $id_membre= $membre['ID_MEMBRE'];
         
         }*/
+        $role1 = $_SESSION["role"];
         $phone = $_SESSION['phone'];
+        if ($_SESSION['role'] == "s") {
         $cne = $_SESSION['cne'];
         $appoge = $_SESSION['appoge'];
+        }
+        else
+        {
+          $cne = NULL;
+          $appoge = NULL;
+        }
         $natio = $_SESSION['NATIONALITE'];
        $id_membre = $_SESSION['id_membre'];
       $req_profile="SELECT * FROM MEMBRE WHERE EMAIL='$mail'";

@@ -78,5 +78,5 @@ else {
 }
 
 
-include('psetting.html');
+include('psettings.html');
 ?>

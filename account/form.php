@@ -14,9 +14,9 @@ if(isset($_SESSION["mail"]) || isset($_SESSION["role"])){
         $cpw= $_POST['cpw'];
         echo $mail;
         //fetch id member
-
+        $url = $_SERVER['REQUEST_URI'];
         $req_id_member="SELECT ID_MEMBRE from MEMBRE where email='$mail'";
-
+        
         $resm=$mysqli->query($req_id_member);
         while($mmbre= $resm->fetch_assoc()){
             $id_membre= $mmbre['ID_MEMBRE'];
@@ -30,10 +30,12 @@ if(isset($_SESSION["mail"]) || isset($_SESSION["role"])){
         }       
         if($mysqli){
              echo'<script> alert("Data saved !!"); </script>';
-            header('Location: classe.php');
+            header('Location: classe.php?test1='.$cname);
         }
         else{
             echo'<script> alert("ERROR : Data Not saved !!"); </script>';
+            header('location : '.$url);
+        
         }
     
     } 
@@ -46,6 +48,7 @@ if(isset($_SESSION["mail"]) || isset($_SESSION["role"])){
         $pw= $_POST['cpw'];
         $_SESSION["classe_name"]=$cname;
         $mail= $_SESSION['mail'];
+        $url =  $_SERVER['HTTP_REFERER'];
         $req_id_member="SELECT ID_MEMBRE from MEMBRE where email='$mail'";
         $resm=$mysqli->query($req_id_member);
         while($mmbre= $resm->fetch_assoc()){
@@ -64,13 +67,14 @@ if(isset($_SESSION["mail"]) || isset($_SESSION["role"])){
         if ($res_classe_info->num_rows==0){                       
             echo'<script> alert("Classe name or password incorrect !!!"); </script>';
             //header('Location: profile.php');
+            header('location : '.$url);
         }
         else{
             // inserting into classes_joined 
             $req_insert2="INSERT INTO class_joined (ID_MEMBRE,ID_CLASSE,nom_classe) VALUES ($id_membre, $id_classe, '$cname')";
             $res_insert2=$mysqli->query($req_insert2);
  
-            header('Location: classe.php');
+            header('Location: classe.php?test1='.$cname);
         }
      
 
