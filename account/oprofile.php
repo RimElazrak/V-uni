@@ -1,4 +1,5 @@
 <?php
+//php code for "oprofile" for search results
   session_start();                                                           
   if(isset($_SESSION["logged"])){                              
    // if(isset($_GET['mem']))
