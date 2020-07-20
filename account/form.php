@@ -1,4 +1,5 @@
 <?php  
+// formulaire d'ajout et rejoindre classe ***************
 session_start();
 if(isset($_SESSION["mail"]) || isset($_SESSION["role"])){
 
@@ -79,6 +80,24 @@ if(isset($_SESSION["mail"]) || isset($_SESSION["role"])){
      
 
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     // --------------------------------------- publie------------------------------//
     if (isset($_POST["publier"])){   
         $mail=$_SESSION["mail"];
