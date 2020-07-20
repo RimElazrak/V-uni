@@ -1,10 +1,11 @@
 <?php  
+// publier dans une filiere
 session_start();
 if(isset($_SESSION["mail"]) || isset($_SESSION["role"])){
 
     $mysqli= new mysqli('127.0.0.1','root','','pfe');
    
-    // --------------------------------------- posting in f------------------------------//
+    // --------------------------------------- posting in filiere------------------------------//
     if (isset($_GET['id_f']))
       $id_filiere = $_GET['id_f'];
     if (isset($_POST["fpublier"])){   
@@ -29,7 +30,7 @@ if(isset($_SESSION["mail"]) || isset($_SESSION["role"])){
            header('Location: ../profile.php?idfiliere= '.$id_filiere );
        }
     }
-    //************************************************ posting comments in f ******************************* */
+    //************************************************ posting comments in filiere ******************************* */
 
 /////////////////////// posting in class //////////////////////// 
     if (isset($_POST["cpublier"])){   
