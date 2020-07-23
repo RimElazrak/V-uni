@@ -19,6 +19,8 @@ if(isset($_SESSION["mail"]) || isset($_SESSION["role"])){
         $contenu=$_POST["contenu"];
         //$visibilite=$_POST["visibilite"];
         $titre=$_POST["titre"];
+
+        
         $now = DateTime::createFromFormat('U.u', microtime(true));
         $current= $now->format("Y-m-d H:i:s");
         

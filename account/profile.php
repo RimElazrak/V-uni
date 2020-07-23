@@ -12,7 +12,7 @@ if(isset($_SESSION["logged"])){
   $additionalMenu="";                   // test / if the user is a professor, a new item on the panel will appear 
  // $rand=rand();
   //$_SESSION['rand']=$rand;
-function getName($n) {                  // generating random input names  FOR UNIQUE ID'S FOR POSTS OR COMMENTS (FRONTEND)
+function getName($n) {              // generating random input names  FOR UNIQUE ID'S FOR POSTS OR COMMENTS (FRONTEND)
   $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'; 
   $randomString = ''; 
 
@@ -45,7 +45,7 @@ function getName($n) {                  // generating random input names  FOR UN
     }
     
   while ($f=$res_filiere->fetch_assoc()){                     
-      $filiere = $f['FILIERE'];                                       //extraire nom de filiere a partir de la table ETUDIANT (ma m7tajinhach had sa3a)
+      $filiere = $f['FILIERE'];            //extraire nom de filiere a partir de la table ETUDIANT (ma m7tajinhach had sa3a)
     }
    /*  $req_idfiliere="SELECT ID_FILIERE FROM FILIERE WHERE nom='$filiere'";     //recuperer id a partir de la requete precedente 
     $res_idfiliere=$mysqli->query($req_idfiliere);

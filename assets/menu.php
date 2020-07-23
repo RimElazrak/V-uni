@@ -144,10 +144,10 @@ nav ul li a {
                </div>
                <div class="menu">
                   <ul>
-                     <li><a href="#">Home</a></li>
+                     <li><a href="home.php">Home</a></li>
                      <li><a href="#">About</a></li>
                      
-                     <li><a href="#">Contact</a></li>
+                     <li><a href="contact.php">Contact</a></li>
                   </ul>
                </div>
             </nav>
